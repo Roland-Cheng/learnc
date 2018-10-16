@@ -6,12 +6,12 @@ int main()
 		while (c != EOF){
 				if (c == ' ')
 						printf("blank");
-				if (c == '\t')
+				else if (c == '\t')
 						printf("\\t");
-				if (c == '\n')
+				else if (c == '\n')
 						printf("\\n");
-		if (c != ' ','\t','\n')
-				putchar(c);
+		        else if (c != ' ','\t','\n')
+				        putchar(c);
 		}
 		return 0;
 }
