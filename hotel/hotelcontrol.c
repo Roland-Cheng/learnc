@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include"hotel.h"
+#include"hotel.c"
 int main(void)
 {
     int nights;
