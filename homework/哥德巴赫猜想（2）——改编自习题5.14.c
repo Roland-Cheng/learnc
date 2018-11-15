@@ -26,7 +26,8 @@ int main()
     int i, n, x, j, a, b;
     for(;;)
     {
-        if (scanf("%d%d",&a,&b) == EOF) break;
+        scanf("%d%d",&a,&b);
+        if (a == 0) break;
         else{
             if (a%2) a = a+1;
             if (b%2) b = b-1;

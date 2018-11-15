@@ -1,23 +1,48 @@
 #include<stdio.h>
-int strelen(char *s);
 int main()
 {
-    int n, i;
-    char *s;
+    int n, way, i, j, num, k, summ;
     scanf("%d",&n);
-    getchar();
-    for(i = 1;i <= n;i++)
+    int sum[n], times[n], sig[n];
+    for (i = 0;i < n;i++)
     {
-        //scanf("%[^\n]",s);
-        //printf("%s",s);
-        fgets(s,500,stdin);
-        printf("%d\n",strelen(s)-1);
+        scanf ("%d",&way);
+        if (way == 1)
+        {
+            for (j = 0,k = 0;j<10;j++)
+            {
+                scanf("%d",&num);
+                if (num > 0) 
+                {
+                    summ += num;
+                    k++;
+                }
+            }
+            sig[i] = 1;
+            sum[i] = summ;
+        }
+        else 
+        {
+            for (j = 0,k = 0;j<10;j++)
+            {
+                scanf("%d",&num);
+                if (num <= 0)
+                continue;
+                summ += num;
+                k++;
+            }
+            sig[i] = 0;
+            sum[i] = summ;
+        }
+        times[i] = k;
     }
-}
-int strelen(char *s)
-{
-    int i;
-    if (*s == '\0')
+    for (i = 0;i<n;i++)
+    {
+    if (sig[i] == 0 && times[i] != 0)
+    printf ("In \"continue\" way,numbers=%d,average=%.6f\n",times[i],(1.0*sum[i]/times[i]));
+    if (sig[i] == 1 && times[i] != 0)
+    printf("In \"no continue\" way,numbers=%d,average=%.6f\n",times[i],(1.0*sum[i]/times[i]));
+    };
     return 0;
-    else return(1 + strelen(++s));
+
 }
