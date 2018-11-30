@@ -47,6 +47,7 @@ int main ()
     
     return 0;
 }
+
 void printbit (int x)
 {
     int i;
