@@ -12,7 +12,7 @@ int main()
         if (0<=k && k<M && !s[k])
         {
             s[k] = 1;
-            printf("%d\t",k+1);  
+            printf("\t%d",k+1);  
         }
         k+=N;
         if (k>=M) k=k-M;
