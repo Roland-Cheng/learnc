@@ -18,8 +18,8 @@ void strnins(char s[],char t[],int n)
 {
     char m[500];
     int i=0,j=0;
-    while (i<n) m[i] = s[i++];
-    while (t[j]) m[i+j] = t[j++];
-    while (s[i-1]) m[i+j] = s[i++];
+    while (i<n) m[i] = s[i],i++;
+    while (t[j]) m[i+j] = t[j],j++;
+    while (s[i-1]) m[i+j] = s[i],i++;
     printf("%s\n",m);
  }

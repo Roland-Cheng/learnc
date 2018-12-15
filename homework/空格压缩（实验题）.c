@@ -6,7 +6,7 @@ int main()
 {
     for (;;)
     {
-        int n;
+        int n,i;
         scanf("%d",&n);
         getchar();
         if(n == 0) break;
@@ -32,5 +32,6 @@ void chuli(char s[])
     { 
         if (*(p-1) == ' ') putchar(' ');
         printf("\n");
-    }    
+    }
+    
 }
