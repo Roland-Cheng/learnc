@@ -1,62 +1,36 @@
 #include<stdio.h>
-#define M 5
-#define N 5
-#define p 100
+#define scale 100
 
+void chuli (char s[]);
 int main()
 {
-    char name[N][p], class[M][p], *cp=class[0], *np=name[0];
-    double grade[N][M], * gp[N];
-    double sum[N], csum[M], *csp = csum;
-    int i;
-    for(i=0;i<N;i++) gp[i] = grade[i];
-    for(i=0;i<M;i++,cp+=p) scanf(" %s",cp);
-    cp = class[0];
-    for(i=0;i<N;i++,np+=p)
+    for (;;)
     {
-        scanf(" %s",np);
-        for (;gp[i]<grade[i]+M;gp[i]++) scanf("%le",gp[i]);
-        gp[i]-=M;
+        int n;
+        scanf("%d",&n);
+        getchar();
+        if(n == 0) break;
+        char s[n][scale], *p = s[0];
+        for(;p<s[0]+n*scale;fgets(p,80,stdin),chuli(p),p+=scale);
+        printf("\n");
     }
+}
 
-    np = name[0];
-    for(i=0;i<N;i++)
+void chuli(char s[])
+{
+    int flag = 0,j=0;
+    char *p = s;
+    for(;*p!='\n';)
     {
-        for (;gp[i]<grade[i]+M;gp[i]++) sum[i]+=*gp[i];
-        gp[i]-=M;
-        printf("Average score of %s is %.2f\n",name[i],sum[i]/M);
+        if (*p == ' ' && flag == 0) flag=1;
+        else if (*p == ' ');
+        else if (flag == 1) putchar(' '),putchar(*p),flag = 0,j++;
+        else putchar(*p),j++;
+        p++;
     }
-    for(;csp<csum+M;cp+=p,csp++) 
-    {
-        for(i=0;i<N;*csp+=*gp[i],gp[i]++,i++);
-        printf("Average score of %s is %.2f\n",cp,*csp/N);
-    }
-
-    for(i=0;i<N;i++) gp[i] = grade[i];
-    cp = class[0];
-    csp = csum;
-    for(;csp<csum+M;cp+=p,csp++) 
-    {
-        int j=0;
-        for(i=0;i<N;gp[i]++,i++) if(*gp[i]<*csp/N) j++;
-        printf("Number of students lower than avg of %s is %d\n",cp,j);
-    }
-
-    for(i=0;i<N;i++) gp[i] = grade[i];
-    cp = class[0];
-    for(;cp<class[0]+p*M;cp+=p)
-    {
-        int j=0;
-        for(i=0;i<N;gp[i]++,i++) if(*gp[i]<60) j++;
-        printf("Number of students %s fail is %d\n",cp,j);
-    }
-
-    for(i=0;i<N;i++) gp[i] = grade[i];
-    cp = class[0];
-    for(;cp<class[0]+p*M;cp+=p)
-    {
-        int j=0;
-        for(i=0;i<N;gp[i]++,i++) if(*gp[i]>=90) j++;
-        printf("Number of students %s perfect is %d\n",cp,j);
-    }
+    if (j)
+    { 
+        if (*(p-1) == ' ') putchar(' ');
+        printf("\n");
+    }    
 }

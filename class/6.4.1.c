@@ -1,36 +1,22 @@
 #include<stdio.h>
-#define scale 100
 
-void chuli (char s[]);
+void putout (long x);
 int main()
 {
-    for (;;)
-    {
-        int n;
-        scanf("%d",&n);
-        getchar();
-        if(n == 0) break;
-        char s[n][scale], *p = s[0];
-        for(;p<s[0]+n*scale;fgets(p,80,stdin),chuli(p),p+=scale);
-        printf("\n");
-    }
+    int n, i;
+    scanf ("%d",&n);
+    long num[n];
+    for (i = 0;i<n;scanf("%ld",&num[i]),putout(num[i++]));
 }
 
-void chuli(char s[])
+void putout (long x)
 {
-    int flag = 0,j=0;
-    char *p = s;
-    for(;*p!='\n';)
+    unsigned long y = 0xf0000000;
+    int j;
+    for (j=0;j<8;j++)
     {
-        if (*p == ' ' && flag == 0) flag=1;
-        else if (*p == ' ');
-        else if (flag == 1) putchar(' '),putchar(*p),flag = 0,j++;
-        else putchar(*p),j++;
-        p++;
+        printf("%lX",(x&(y>>j*4))>>(28-j*4));
+        if (j != 7) putchar(' ');
     }
-    if (j)
-    { 
-        if (*(p-1) == ' ') putchar(' ');
-        printf("\n");
-    }    
+    printf("\n");
 }
