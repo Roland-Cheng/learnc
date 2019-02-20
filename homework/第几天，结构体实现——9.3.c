@@ -3,24 +3,27 @@
 int isleap(int x);
 int main()
 {
-    int i, n, y, d, m, sum, j;
+    int i, n, sum, j;
     int s[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
     int l[12] = {31,29,31,30,31,30,31,31,30,31,30,31};
     scanf ("%d",&n);
+    struct day {
+        int year,month,date;
+    } day[n];
     for (i = 0;i < n;i++)
     {
-        scanf ("%d%d%d",&y,&m,&d);
-        if (isleap(y))
+        scanf ("%d%d%d",&day[i].year,&day[i].month,&day[i].date);
+        if (isleap(day[i].year))
         {
-            for (j = 0,sum = 0;j<m-1;j++)
+            for (j = 0,sum = 0;j<day[i].month-1;j++)
             sum+=l[j];
-            sum = sum +d;
+            sum = sum +day[i].date;
 
         }
         else{
-            for (j = 0,sum = 0;j<m-1;j++)
+            for (j = 0,sum = 0;j<day[i].month-1;j++)
             sum+=s[j];
-            sum = sum +d;
+            sum = sum +day[i].date;
 
         }
         printf("%d\n",sum);
