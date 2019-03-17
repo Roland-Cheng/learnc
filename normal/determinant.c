@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define order 0              //0为不输入阶数，1为需要输入
+#define order 1              //0为不输入阶数，1为需要输入
 typedef struct stack{        //规定一个结构体，便于输入，用于方法2建立栈
     double x;
     struct stack *next;
