@@ -1,5 +1,5 @@
 #include<stdio.h>
-int min();
+int min(int x,int y);
 int main()
 {
     int x;
