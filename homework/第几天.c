@@ -23,7 +23,7 @@ int main()
             sum = sum +d;
 
         }
-        printf("%d\n",sum);
+        printf("该日期是当年的第%d天\n",sum);
     }
 }
 
