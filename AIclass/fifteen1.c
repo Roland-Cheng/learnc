@@ -3,21 +3,21 @@
 #include <math.h>  
 #define size 4
 
-int move[4][2]={{-1,0},{0,-1},{0,1},{1,0}};//ä¸Š å·¦ å³ ä¸‹  ç½®æ¢é¡ºåº
+int move[4][2]={{-1,0},{0,-1},{0,1},{1,0}};//ÉÏ ×ó ÓÒ ÏÂ  ÖÃ»»Ë³Ğò
 char op[4]={'U','L','R','D'};  
 int open[size][size],close[size*size],limit,path[100];  
 int flag,length;   
 int goal[16][2]= {{3,3},{0,0},{0,1}, {0,2},{0,3}, {1,0},   
-            {1,1}, {1,2}, {1,3},{2,0}, {2,1}, {2,2},{2,3},{3,0},{3,1},{3,2}};//å„ä¸ªæ•°å­—åº”åœ¨ä½ç½®å¯¹ç…§è¡¨
+            {1,1}, {1,2}, {1,3},{2,0}, {2,1}, {2,2},{2,3},{3,0},{3,1},{3,2}};//¸÷¸öÊı×ÖÓ¦ÔÚÎ»ÖÃ¶ÔÕÕ±í
 int nixu(int a[size*size])  
 {  
-    int i,j,ni,w,x,y;  //wä»£è¡¨0çš„ä½ç½® ä¸‹æ ‡ï¼Œx y ä»£è¡¨0çš„æ•°ç»„åæ ‡
+    int i,j,ni,w,x,y;  //w´ú±í0µÄÎ»ÖÃ ÏÂ±ê£¬x y ´ú±í0µÄÊı×é×ø±ê
     ni=0;  
     for(i=0;i<size*size;i++)  //size*size=16
     {  
-        if(a[i]==0)  //æ‰¾åˆ°0çš„ä½ç½®
+        if(a[i]==0)  //ÕÒµ½0µÄÎ»ÖÃ
             w=i;  
-        for(j=i+1;j<size*size;j++)  //æ³¨æ„ï¼ï¼æ¯ä¸€ä¸ªéƒ½è·Ÿå…¶åæ‰€æœ‰çš„æ¯”ä¸€åœˆ æŸ¥æ‰¾å°äºiçš„ä¸ªæ•°ç›¸åŠ 
+        for(j=i+1;j<size*size;j++)  //×¢Òâ£¡£¡Ã¿Ò»¸ö¶¼¸úÆäºóËùÓĞµÄ±ÈÒ»È¦ ²éÕÒĞ¡ÓÚiµÄ¸öÊıÏà¼Ó
         {  
             if(a[i]>a[j])  
                 ni++;  
@@ -25,14 +25,14 @@ int nixu(int a[size*size])
     }  
     x=w/size;  
     y=w%size;  
-    ni+=fabs(x-3)+fabs(y-3);  //æœ€ååŠ ä¸Š0çš„åç§»é‡ 
+    ni+=fabs(x-3)+fabs(y-3);  //×îºó¼ÓÉÏ0µÄÆ«ÒÆÁ¿ 
     if(ni%2==1)  
         return 1;  
     else  
         return 0;  
 }  
 
-int hv(int a[][size])//ä¼°ä»·å‡½æ•°ï¼Œæ›¼å“ˆé¡¿è·ç¦»ï¼Œå°ç­‰äºå®é™…æ€»æ­¥æ•°  
+int hv(int a[][size])//¹À¼Ûº¯Êı£¬Âü¹ş¶Ù¾àÀë£¬Ğ¡µÈÓÚÊµ¼Ê×Ü²½Êı  
 {  
     int i,j,cost=0;  
     for(i=0;i<size;i++)  
@@ -53,7 +53,7 @@ void swap(int*a,int*b)
     *a=*b;  
     *b=tmp;  
 }  
-void dfs(int sx,int sy,int len,int pre_move)//sx,syæ˜¯ç©ºæ ¼çš„ä½ç½®  
+void dfs(int sx,int sy,int len,int pre_move)//sx,syÊÇ¿Õ¸ñµÄÎ»ÖÃ  
 {  
     int i,nx,ny;  
         if(flag)  
@@ -61,18 +61,18 @@ void dfs(int sx,int sy,int len,int pre_move)//sx,syæ˜¯ç©ºæ ¼çš„ä½ç½®
     int dv=hv(open);  
         if(len==limit)  
         {  
-            if(dv==0)  //æˆåŠŸï¼ é€€å‡º 
+            if(dv==0)  //³É¹¦£¡ ÍË³ö 
             {  
                 flag=1;  
                 length=len;  
                 return;  
             }  
             else  
-                return;  //è¶…è¿‡é¢„è®¾é•¿åº¦ å›é€€
+                return;  //³¬¹ıÔ¤Éè³¤¶È »ØÍË
         }  
         else if(len<limit)  
         {  
-            if(dv==0)  //çŸ­äºé¢„è®¾é•¿åº¦ æˆåŠŸï¼é€€å‡º
+            if(dv==0)  //¶ÌÓÚÔ¤Éè³¤¶È ³É¹¦£¡ÍË³ö
             {  
                 flag=1;  
                 length=len;  
@@ -81,22 +81,22 @@ void dfs(int sx,int sy,int len,int pre_move)//sx,syæ˜¯ç©ºæ ¼çš„ä½ç½®
         }  
     for(i=0;i<4;i++)  
     {  
-            if(i+pre_move==3&&len>0)//ä¸å’Œä¸Šä¸€æ¬¡ç§»åŠ¨æ–¹å‘ç›¸åï¼Œå¯¹ç¬¬äºŒæ­¥ä»¥åè€Œè¨€  
+            if(i+pre_move==3&&len>0)//²»ºÍÉÏÒ»´ÎÒÆ¶¯·½ÏòÏà·´£¬¶ÔµÚ¶ş²½ÒÔºó¶øÑÔ  
                 continue;      
-        nx=sx+move[i][0];  //ç§»åŠ¨çš„å››æ­¥ ä¸Šå·¦å³ä¸‹
+        nx=sx+move[i][0];  //ÒÆ¶¯µÄËÄ²½ ÉÏ×óÓÒÏÂ
         ny=sy+move[i][1];  
-        if(0<=nx&&nx<size && 0<=ny&&ny<size)  //åˆ¤æ–­ç§»åŠ¨åˆç†
+        if(0<=nx&&nx<size && 0<=ny&&ny<size)  //ÅĞ¶ÏÒÆ¶¯ºÏÀí
         {  
             swap(&open[sx][sy],&open[nx][ny]);  
-            int p=hv(open);   //ç§»åŠ¨åçš„ æ›¼å“ˆé¡¿è·ç¦»p=16
-            if(p+len<=limit&&!flag)  //p+len<=limit&&!flagå‰ªæåˆ¤æ–­è¯­å¥
+            int p=hv(open);   //ÒÆ¶¯ºóµÄ Âü¹ş¶Ù¾àÀëp=16
+            if(p+len<=limit&&!flag)  //p+len<=limit&&!flag¼ôÖ¦ÅĞ¶ÏÓï¾ä
             {  
                 path[len]=i;  
-                dfs(nx,ny,len+1,i);  //å¦‚å½“å‰æ­¥æˆåŠŸåˆ™ é€’å½’è°ƒç”¨dfs
+                dfs(nx,ny,len+1,i);  //Èçµ±Ç°²½³É¹¦Ôò µİ¹éµ÷ÓÃdfs
                 if(flag)  
                     return;  
             }  
-            swap(&open[sx][sy],&open[nx][ny]);  //ä¸åˆç†åˆ™å›é€€ä¸€æ­¥
+            swap(&open[sx][sy],&open[nx][ny]);  //²»ºÏÀíÔò»ØÍËÒ»²½
         }  
     }  
 }  
@@ -105,10 +105,10 @@ int main()
     int i,j,k,l,m,n,sx,sy;  
     char c,g;  
     i=0;       
-    printf("è¯·è¾“å…¥åäº”æ•°ç ï¼š\n");
+    printf("ÇëÊäÈëÊ®ÎåÊıÂë£º\n");
     flag=0,length=0;
-    memset(path,-1,sizeof(path));  //å·²å®šä¹‰path[100]æ•°ç»„ï¼Œå°†pathå¡«æ»¡-1   void* memset(void*s,int ch,size_t n):å°†Sä¸­å‰nä¸ªå­—èŠ‚ç”¨chæ›¿æ¢å¹¶è¿”å›Sã€‚
-    for(i=0;i<16;i++)  //ç»™open å’Œcloseèµ‹å€¼openæ˜¯äºŒç»´æ•°ç»„ï¼Œcloseæ˜¯ä¸€ç»´æ•°ç»„
+    memset(path,-1,sizeof(path));  //ÒÑ¶¨Òåpath[100]Êı×é£¬½«pathÌîÂú-1   void* memset(void*s,int ch,size_t n):½«SÖĞÇ°n¸ö×Ö½ÚÓÃchÌæ»»²¢·µ»ØS¡£
+    for(i=0;i<16;i++)  //¸øopen ºÍclose¸³ÖµopenÊÇ¶şÎ¬Êı×é£¬closeÊÇÒ»Î¬Êı×é
     {  
         scanf("%d",&close[i]);  
         if(close[i]==0)  
@@ -121,23 +121,23 @@ int main()
             open[i/size][i%size]=close[i];  
         }  
     }                                      
-    if(nixu(close)==1)                     //è¯¥çŠ¶æ€å¯è¾¾  
+    if(nixu(close)==1)                     //¸Ã×´Ì¬¿É´ï  
     {  
-        limit=hv(open);  //å…¨éƒ¨çš„æ›¼å“ˆé¡¿è·ç¦»ä¹‹å’Œ
-        while(!flag&&length<=50)//è¦æ±‚50æ­¥ä¹‹å†…åˆ°è¾¾  
+        limit=hv(open);  //È«²¿µÄÂü¹ş¶Ù¾àÀëÖ®ºÍ
+        while(!flag&&length<=50)//ÒªÇó50²½Ö®ÄÚµ½´ï  
         {  
             dfs(sx,sy,0,0);  
             if(!flag)  
-            limit++; //å¾—åˆ°çš„æ˜¯æœ€å°æ­¥æ•°  
+            limit++; //µÃµ½µÄÊÇ×îĞ¡²½Êı  
         }  
         if(flag)  
         {  
             for(i=0;i<length;i++)  
-            printf("%c",op[path[i]]);  //æ ¹æ®pathè¾“å‡ºURLDè·¯å¾„
+            printf("%c",op[path[i]]);  //¸ù¾İpathÊä³öURLDÂ·¾¶
             printf("\n");  
         }  
     }  
     else if(!nixu(close)||!flag)  
-        printf("è¯¥é—®é¢˜ä¸å¯è§£ã€‚\n");    
+        printf("¸ÃÎÊÌâ²»¿É½â¡£\n");    
     return 0;  
 }  
