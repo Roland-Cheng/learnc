@@ -38,7 +38,7 @@ status ListDelete(SqList& L,int i,ElemType& e);
 status ListTrabverse(SqList L);  //简化过
 /*--------------------------------------------*/
 int main(void){
-SqList L;  int op=1; ElemType e,x; int i;
+SqList L,Q[30]; SqList *p=NULL; int op=1; ElemType e,x; int i,j=0,k;
 FILE *fp; char string[100]; int flag;
 while(op){
 	system("cls");	printf("\n\n");
@@ -50,15 +50,31 @@ while(op){
 	printf("    	  4. ListEmpty      10. ListInsert\n");
 	printf("    	  5. ListLength     11. ListDelete\n");
 	printf("    	  6. GetElem        12. ListTrabverse\n");
-	printf("    	  0. Exit\n");
+	printf("    	  13.switch         0. Exit\n");
 	printf("-------------------------------------------------\n");
 	printf("          101.存储线性表    102.读取线性表\n");
-	printf("请选择你的操作[0~12]:");
+	printf("请选择你的操作[0~13]:");
 	scanf("%d",&op);
     switch(op){
 		case 1:
-			if(InitList(L)==OK) printf("线性表创建成功！\n");
-				else printf("线性表创建失败！\n");
+			if(j) Q[j-1]=L;
+			printf("请输入要创建的表（1~30）:\n");
+			for(k=0;k<30;k++) 
+			if(Q[k].elem==NULL)
+			printf("%d ",k+1);
+			printf("\n");
+			scanf("%d",&k);
+			if(0<k&&k<=30){
+				if(Q[k-1].elem==NULL){
+					if(InitList(L)==OK) {
+						printf("线性表创建成功！\n");
+						j=k;
+					}
+					else printf("线性表创建失败！\n");
+				}
+				else printf("线性表已经创建，请重试\n");
+			}
+			else printf("请输入正确的值\n");
 			getchar();getchar();
 			break;
 		case 2:
@@ -133,17 +149,36 @@ while(op){
 			getchar();getchar();
 			break;
 		case 11:
-			printf("请输入要删除的位置：\n");
+			if(L.elem)
+			printf("请输入要删除的位置：（输入范围为1~%d）\n",L.length);
+			else printf("请输入要删除的位置：\n");
 			scanf("%d",&i);
 			flag=ListDelete(L,i,e);
 			if(flag==OK) printf("成功删除第%d位元素，其值为%d\n",i,e);
-			else if(flag==FALSE) printf("删除失败\n");   
+			else if(flag==FALSE) printf("位置值不对哦,最大输入位置值为%d\n",L.length);   
 			getchar();getchar();
 			break;
 		case 12:
 			flag=ListTrabverse(L);  
 			if(flag==FALSE) printf("线性表是空表！\n");
 			else if(flag!=ERROR) printf("一共是%d个元素\n",flag);
+			getchar();getchar();
+			break;
+		case 13:
+			if(j) Q[j-1]=L;
+			printf("选择要切换的表：\n");
+			for(k=0;k<30;k++) 
+			if(Q[k].elem!=NULL)
+			printf("%d ",k+1);
+			printf("\n");
+			scanf("%d",&k);
+			if(k<=0 || k>30) printf("请输入正确的值\n");
+			else if(Q[k-1].elem!=NULL){
+				L=Q[k-1];
+				printf("切换成功\n");
+				j=k;
+			}
+			else printf("切换的表不存在\n");
 			getchar();getchar();
 			break;
 		case 0:
