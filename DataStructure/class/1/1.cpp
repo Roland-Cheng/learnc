@@ -1,9 +1,7 @@
-/* Linear Table On Sequence Structure */
 #include <stdio.h>
 #include <malloc.h>
 #include <stdlib.h>
-
-/*---------page 10 on textbook ---------*/
+/*定义各类常量*/
 #define TRUE 1
 #define FALSE 0
 #define OK 1
@@ -15,34 +13,40 @@
 typedef int status; 
 typedef int ElemType; //数据元素类型定义
 
-/*-------page 22 on textbook -------*/
 #define LIST_INIT_SIZE 100
 #define LISTINCREMENT  10
 typedef struct{  //顺序表（顺序结构）的定义
-	ElemType * elem=NULL;
-	int length=0;
-	int listsize=0;
+	ElemType * elem=NULL; //存储空间基地址
+	int length=0;  //定义表长，并初始定义为0
+	int listsize=0;  //定义表的最大长度，若表不存在，则定义为0
 }SqList;
-/*-----page 19 on textbook ---------*/
+
+/*进行函数的声明，之后在主函数之后会进行构造的*/
 status InitList(SqList& L);
 status DestroyList(SqList& L);
 status ClearList(SqList&L);
 status ListEmpty(SqList L);
 status ListLength(SqList L);
 status GetElem(SqList L,int i,ElemType& e);
-status LocateElem(SqList L,ElemType e); //简化过
+status LocateElem(SqList L,ElemType e); 
 status PriorElem(SqList L,ElemType cur,ElemType& pre_e);
 status NextElem(SqList L,ElemType cur,ElemType& next_e);
 status ListInsert(SqList& L,int i,ElemType e);
 status ListDelete(SqList& L,int i,ElemType& e);
-status ListTrabverse(SqList L);  //简化过
-/*--------------------------------------------*/
+status ListTrabverse(SqList L);  
+
 int main(void){
-SqList L,Q[30]; SqList *p=NULL; int op=1; ElemType e,x; int i,j=0,k;
-FILE *fp; char string[100]; int flag;
+SqList L,Q[30];  //定义主表L和用于存储表的线性表数组Q
+SqList *p=NULL;  //定义结构指针，并将其悬挂
+int op=1;  //输入操作数
+ElemType e,x;  //定义元素类型，用来进行之后部分的数据元素输出
+int i,j=0,k;  //定义i用于基本的循环，定义j用于指示当前的表为第几号，定义k用来保护j
+FILE *fp;  //定义文件指针，之后进行文件操作
+char string[100];  //用于存储之后会使用的文件名称
+int flag;  //用于存储各类函数的返回值，用于判断
 while(op){
 	system("cls");	printf("\n\n");
-	printf("      Menu for Linear Table On Sequence Structure \n");
+	printf("      Menu for Linear Table On Sequence Structure \n");  //系统的主要功能展示界面
 	printf("-------------------------------------------------\n");
 	printf("    	  1. InitList       7. LocateElem\n");
 	printf("    	  2. DestroyList    8. PriorElem\n");
@@ -57,11 +61,11 @@ while(op){
 	scanf("%d",&op);
     switch(op){
 		case 1:
-			if(j) Q[j-1]=L;
+			if(j) Q[j-1]=L;  //先将当前使用的主表进行储存
 			printf("请输入要创建的表（1~30）:\n");
-			for(k=0;k<30;k++) 
+			for(k=0;k<30;k++)
 			if(Q[k].elem==NULL)
-			printf("%d ",k+1);
+			printf("%d ",k+1);  //使用for循环，输出当前尚可建立的线性表，也就是当前尚未存在的表
 			printf("\n");
 			scanf("%d",&k);
 			if(0<k&&k<=30){
@@ -149,9 +153,13 @@ while(op){
 			getchar();getchar();
 			break;
 		case 11:
-			if(L.elem)
+			if(L.length)
 			printf("请输入要删除的位置：（输入范围为1~%d）\n",L.length);
-			else printf("请输入要删除的位置：\n");
+			else {
+				printf("表为空，无法删除\n");
+				getchar();getchar();
+				break;
+			}
 			scanf("%d",&i);
 			flag=ListDelete(L,i,e);
 			if(flag==OK) printf("成功删除第%d位元素，其值为%d\n",i,e);
@@ -234,8 +242,8 @@ status DestroyList(SqList& L){
 		printf("确认删除？【y/n】\n");  //进行确认是否删除
 		scanf("%c",&c);
 		if(c=='y'){
-			free(L.elem);
-			L.elem=NULL;
+			free(L.elem);  //若确认删除，就清空数组
+			L.elem=NULL;  //将数组中的元素归零
 			L.listsize=0;
 			L.length=0;
 			printf("删除成功\n");
@@ -253,7 +261,7 @@ status ClearList(SqList& L){
 	int flag=ListEmpty(L);
 	if(flag==FALSE){
 		getchar();
-		printf("确认清空线性表？【y/n】\n");
+		printf("确认清空线性表？【y/n】\n"); //进行确认是否删除，避免误操作
 		char c;
 		c=getchar();
 		if(c=='y'){
@@ -301,9 +309,9 @@ status GetElem(SqList L,int i,ElemType& e){
 			e=L.elem[i-1];
 			return OK;
 		}
-		else return OVERFLOW;
+		else return OVERFLOW; //若输入值超过限制，则返回overflow
 	}
-	else if(flag==TRUE) return FALSE;
+	else if(flag==TRUE) return FALSE; //若表为空，返回false
 }
 
 status LocateElem(SqList L,ElemType e){
@@ -380,7 +388,7 @@ status ListDelete(SqList& L,int i,ElemType& e){
 		return OK;
 	}
 	else return ERROR;
-}
+}  //成功删除返回OK，错误返回error
 
 status ListTrabverse(SqList L){
 	int flag;
