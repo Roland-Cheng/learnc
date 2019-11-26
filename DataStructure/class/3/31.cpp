@@ -2,7 +2,7 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include <iostream>
-/*å®šä¹‰å„ç±»å¸¸é‡*/
+/*¶¨Òå¸÷Àà³£Á¿*/
 #define TRUE 1
 #define FALSE 0
 #define OK 1
@@ -23,27 +23,27 @@ typedef struct TreeNode
     Node* elem;
 }TreeNode;
 
-#define EmptyTOS    -1  //ç©ºæ ˆ
-#define MinStackSize    5   //æ ˆçš„æœ€å°å€¼
+#define EmptyTOS    -1  //¿ÕÕ»
+#define MinStackSize    5   //Õ»µÄ×îĞ¡Öµ
 
-typedef TreeNode* StackElem;    //æ•°æ®ç±»å‹
+typedef TreeNode* StackElem;    //Êı¾İÀàĞÍ
 
 typedef struct stackRecord
 {
-    int capacity;//å®¹é‡
-    int stackTop;//æ ˆé¡¶
+    int capacity;//ÈİÁ¿
+    int stackTop;//Õ»¶¥
     StackElem *array; 
 }STACK;
 
-int isEmpty(STACK *s);  //åˆ¤ç©º
-int isFull(STACK *s);   //åˆ¤æ»¡
-STACK *createStack(int maxElements);    //æ ˆçš„åˆ›å»º
-void disposeStack(STACK *s);        //æ ˆçš„é‡Šæ”¾
-void makeEmpty(STACK *s);       //åˆ›å»ºç©ºæ ˆ
-void push(StackElem element, STACK *s);//å…¥æ ˆ
-StackElem top(STACK *s);      //è¿”å›æ ˆé¡¶å…ƒç´ 
-void pop(STACK *s);         //å‡ºæ ˆ
-StackElem topAndpop(STACK *s);    //å‡ºæ ˆå¹¶è¿”å›æ ˆé¡¶å…ƒç´ 
+int isEmpty(STACK *s);  //ÅĞ¿Õ
+int isFull(STACK *s);   //ÅĞÂú
+STACK *createStack(int maxElements);    //Õ»µÄ´´½¨
+void disposeStack(STACK *s);        //Õ»µÄÊÍ·Å
+void makeEmpty(STACK *s);       //´´½¨¿ÕÕ»
+void push(StackElem element, STACK *s);//ÈëÕ»
+StackElem top(STACK *s);      //·µ»ØÕ»¶¥ÔªËØ
+void pop(STACK *s);         //³öÕ»
+StackElem topAndpop(STACK *s);    //³öÕ»²¢·µ»ØÕ»¶¥ÔªËØ
 
 int isEmpty(STACK *s)
 {
@@ -123,7 +123,7 @@ StackElem topAndpop(STACK *s)
     }
 }
 
-//æ ˆå®šä¹‰å®Œæˆ
+//Õ»¶¨ÒåÍê³É
 
 status check(int *tree,int n);
 status CreateBiTree(TreeNode* &T,int* tree,Node **treeelem,int n);
@@ -153,11 +153,11 @@ int tree[100]={0};
 int chongfu[50]={0},chongfus[50];
 int stackj[50]={-1};
 int* p,* q;
-Node* treeelem[100]={NULL};
+Node* treeelem[100];
 int flag;
-ElemType x; //å®šä¹‰å…ƒç´ ç±»å‹ï¼Œç”¨æ¥è¿›è¡Œä¹‹åéƒ¨åˆ†çš„æ•°æ®å…ƒç´ è¾“å‡º
-char string[100];  //ç”¨äºå­˜å‚¨ä¹‹åä¼šä½¿ç”¨çš„æ–‡ä»¶åç§°
-FILE *fp;  //å®šä¹‰æ–‡ä»¶æŒ‡é’ˆï¼Œä¹‹åè¿›è¡Œæ–‡ä»¶æ“ä½œ
+ElemType x; //¶¨ÒåÔªËØÀàĞÍ£¬ÓÃÀ´½øĞĞÖ®ºó²¿·ÖµÄÊı¾İÔªËØÊä³ö
+char string[100];  //ÓÃÓÚ´æ´¢Ö®ºó»áÊ¹ÓÃµÄÎÄ¼şÃû³Æ
+FILE *fp;  //¶¨ÒåÎÄ¼şÖ¸Õë£¬Ö®ºó½øĞĞÎÄ¼ş²Ù×÷
 TreeNode* T=NULL;
 TreeNode* Ts[30]={NULL};
 while(op){
@@ -173,17 +173,17 @@ while(op){
     printf("      13.PreOrderTraverse  14.InOrderTraverse\n");
     printf("      15.PostOrderTraverse 16.LevelOrderTraverse\n");
     printf("-------------------------------------------------\n");
-    printf("      101.å­˜å‚¨é“¾è¡¨          102.è¯»å–é“¾è¡¨\n");
-    printf("è¯·é€‰æ‹©ä½ çš„æ“ä½œ:");
+    printf("      101.´æ´¢Á´±í          102.¶ÁÈ¡Á´±í\n");
+    printf("ÇëÑ¡ÔñÄãµÄ²Ù×÷:");
 	scanf("%d",&op);
     switch(op)
     {
     case 1:
     for(i=0;i<50;i++) chongfus[i]=0;
     //for(i=0;i<50;i++) chongfu[i]=0;
-    printf("è¯·è¾“å…¥æ ‘çš„èŠ‚ç‚¹ä¸ªæ•°ï¼š\n");
+    printf("ÇëÊäÈëÊ÷µÄ½Úµã¸öÊı£º\n");
     scanf("%d",&n);
-    printf("è¯·è¾“å…¥æ ‘çš„å…³é”®å­—å’Œæ•°æ®ï¼ˆç”¨ç©ºæ ¼åˆ†éš”ï¼Œæ¢è¡Œè¿›è¡ŒåŒºåˆ†ï¼‰ï¼š\n");
+    printf("ÇëÊäÈëÊ÷µÄ¹Ø¼ü×ÖºÍÊı¾İ£¨ÓÃ¿Õ¸ñ·Ö¸ô£¬»»ĞĞ½øĞĞÇø·Ö£©£º\n");
     for(i=0,flag=0;i<n;i++){
         scanf("%d",&k);
         if(chongfus[k-1]==0) chongfus[k-1]++;
@@ -194,19 +194,11 @@ while(op){
         }
     }
     if(flag){
-        printf("è¾“å…¥äº†é‡å¤çš„ç»“ç‚¹\n");
+        printf("ÊäÈëÁËÖØ¸´µÄ½áµã\n");
         getchar();getchar();
         break;    
     }
-    printf("è¯·é€‰æ‹©è¾“å…¥æ ‡å‡†ï¼š\n1.å¸¦ç©ºå­æ ‘çš„å…ˆåºéå†\n2.å…ˆåºåŠ ä¸­åº\n3.ä¸­åºåŠ ååº\n");
-    scanf("%d",&flag);
-    if(flag<1||flag>3) {
-        printf("è¯·è¾“å…¥æ­£ç¡®çš„å€¼\n");
-        getchar();getchar();
-        break;
-    }
-    if(flag==1){
-        printf("è¯·è¾“å…¥æ ‘çš„å¸¦ç©ºç»“ç‚¹çš„å…ˆåºéå†:\n");
+        printf("ÇëÊäÈëÊ÷µÄ´ø¿Õ½áµãµÄÏÈĞò±éÀú:\n");
         for(i=1,flag=0;i<2*(n+1);i++){
             scanf("%d",&tree[i]);
             if(tree[i]){
@@ -216,175 +208,170 @@ while(op){
             }
         }
         if(flag==1){
-            printf("è¾“å…¥äº†é‡å¤çš„ç»“ç‚¹\n");
+            printf("ÊäÈëÁËÖØ¸´µÄ½áµã\n");
             getchar();getchar();
             break;
         }
         if(flag==2){
-            printf("è¾“å…¥äº†ä¸å­˜åœ¨çš„ç»“ç‚¹\n");
+            printf("ÊäÈëÁË²»´æÔÚµÄ½áµã\n");
             getchar();getchar();
             break;
         }
         if(check(tree,n)==OK){
-            printf("æ ‘å¯ä»¥åˆ›å»º\n");
+            printf("Ê÷¿ÉÒÔ´´½¨\n");
             for(i=0;i<n;i++) chongfu[i]=chongfus[i];
         }
-        else printf("æ ‘ä¸å¯ä»¥åˆ›å»ºï¼Œè¯·é‡æ–°è¾“å…¥\n");    
-    }
-    if(flag==2){
-        int treepre[100]={0},treein[100]={0};
-        printf("è¯·è¾“å…¥å…ˆåºå’Œä¸­åºéå†:\n");
-        for(i=0;i<n;i++){
-        }
-    }
+        else printf("Ê÷²»¿ÉÒÔ´´½¨£¬ÇëÖØĞÂÊäÈë\n");    
     getchar();getchar();
     break;
     case 2:
     if(j) Ts[j-1]=T;
-    printf("é€‰æ‹©è¦åˆ‡æ¢çš„æ ‘ï¼š\n");
+    printf("Ñ¡ÔñÒªÇĞ»»µÄÊ÷£º\n");
     for(k=0;k<30;k++) 
     if(Ts[k]!=NULL)
     printf("%d ",k+1);
     printf("\n");
     scanf("%d",&k);
-    if(k<=0 || k>30) printf("è¯·è¾“å…¥æ­£ç¡®çš„å€¼\n");
+    if(k<=0 || k>30) printf("ÇëÊäÈëÕıÈ·µÄÖµ\n");
     else if(Ts[k-1]!=NULL){
         T=Ts[k-1];
-        printf("åˆ‡æ¢æˆåŠŸ\n");
+        printf("ÇĞ»»³É¹¦\n");
         j=k;
     }
-    else printf("åˆ‡æ¢çš„æ ‘ä¸å­˜åœ¨\n");
+    else printf("ÇĞ»»µÄÊ÷²»´æÔÚ\n");
     getchar();getchar();
     break;
     case 3:
-    if(j) Ts[j-1]=T;  //å…ˆå°†å½“å‰ä½¿ç”¨çš„ä¸»æ ‘è¿›è¡Œå‚¨å­˜
-    for(i=0;i<n;i++)printf("%d ",treeelem[i]->e);
-    for(i=1;i<=2*n+1;i++)printf("%d ",tree[i]);
-    printf("%d",n);
-    printf("è¯·è¾“å…¥è¦åˆ›å»ºçš„è¡¨ï¼ˆ1~30ï¼‰:\n");
+    if(j) Ts[j-1]=T;  //ÏÈ½«µ±Ç°Ê¹ÓÃµÄÖ÷Ê÷½øĞĞ´¢´æ
+    printf("ÇëÊäÈëÒª´´½¨µÄ±í£¨1~30£©:\n");
     for(k=0;k<30;k++) 
     if(Ts[k]==NULL)
-    printf("%d ",k+1);  //ä½¿ç”¨forå¾ªç¯ï¼Œè¾“å‡ºå½“å‰å°šå¯å»ºç«‹çš„æ ‘ï¼Œä¹Ÿå°±æ˜¯å½“å‰å°šæœªå­˜åœ¨çš„æ ‘
+    printf("%d ",k+1);  //Ê¹ÓÃforÑ­»·£¬Êä³öµ±Ç°ÉĞ¿É½¨Á¢µÄÊ÷£¬Ò²¾ÍÊÇµ±Ç°ÉĞÎ´´æÔÚµÄÊ÷
     printf("\n");
     scanf("%d",&k);
     if(0<k&&k<=30){
         if(Ts[k-1]!=NULL){
-            printf("æ ‘å·²ç»åˆ›å»º\n");
+            printf("Ê÷ÒÑ¾­´´½¨\n");
             getchar();getchar();
             break;
         } 
         if(check(tree,n)==ERROR){
-            printf("è¯·æ£€æŸ¥è¾“å…¥ï¼Œæ— æ³•åˆ›å»ºæ ‘\n");
+            printf("Çë¼ì²éÊäÈë£¬ÎŞ·¨´´½¨Ê÷\n");
             getchar();getchar();
             break;
         }
-        if(CreateBiTree(T,tree,treeelem,n)) printf("åˆ›å»ºæˆåŠŸ\n");j=k;
+        if(CreateBiTree(T,tree,treeelem,n)) printf("´´½¨³É¹¦\n");j=k;
         //BiTreeTraverse(T);
     }
-    else printf("è¯·è¾“å…¥æ­£ç¡®çš„å€¼\n");
+    else printf("ÇëÊäÈëÕıÈ·µÄÖµ\n");
     getchar();getchar();
     break;
     case 4:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        printf("ç¡®è®¤é”€æ¯æ ‘ï¼Ÿï¼ˆy/nï¼‰:\n");
+        getchar();
+        printf("È·ÈÏÏú»ÙÊ÷£¿£¨y/n£©:\n");
         char c=getchar();
-        if(c=='y') if(DestroyBiTree(T)) printf("é”€æ¯æˆåŠŸ\n");
-        else printf("åœæ­¢é”€æ¯\n");
+        if(c=='y') {
+            if(DestroyBiTree(T)) printf("Ïú»Ù³É¹¦\n");
+        }
+        else printf("Í£Ö¹Ïú»Ù\n");
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 5:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        printf("ç¡®è®¤æ¸…ç©ºæ ‘ï¼Ÿï¼ˆy/nï¼‰:\n");
+        getchar();
+        printf("È·ÈÏÇå¿ÕÊ÷£¿£¨y/n£©:\n");
         char c=getchar();
-        if(c=='y') if(DestroyBiTree(T)) printf("æ¸…ç©ºæˆåŠŸ\n");
-        else printf("åœæ­¢æ¸…ç©º\n");
+        if(c=='y') {
+            if(ClearBiTree(T)) printf("Çå¿Õ³É¹¦\n");
+        }
+        else printf("Í£Ö¹Çå¿Õ\n");
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 6:
     flag=BiTreeEmpty(T);
-    if(flag==FALSE) printf("æ ‘ä¸ä¸ºç©º\n");
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==FALSE) printf("Ê÷²»Îª¿Õ\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 7:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
         int n=BiTreeDepth(T->left);
-        printf("æ ‘çš„å±‚æ•°ä¸º:%d",n);
+        printf("Ê÷µÄ²ãÊıÎª:%d",n);
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 8:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„å…³é”®å­—:\n");
+        printf("ÇëÊäÈëÒª²éÕÒµÄ¹Ø¼ü×Ö:\n");
         scanf("%d",&e);
-        if(chongfu[e-1]){
             TreeNode* p=LocateNode(T->left,e);
-            printf("è¯¥ç»“ç‚¹å­˜å‚¨çš„å…ƒç´ æ˜¯:%d\n",p->elem->e);
-        }
-        else printf("æœç´¢ä¸åˆ°è¯¥ç»“ç‚¹\n");
+            if(p)
+            printf("¸Ã½áµã´æ´¢µÄÔªËØÊÇ:%d\n",p->elem->e);
+        else printf("ËÑË÷²»µ½¸Ã½áµã\n");
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 9:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„å…³é”®å­—:\n");
+        printf("ÇëÊäÈëÒª²éÕÒµÄ¹Ø¼ü×Ö:\n");
         scanf("%d",&e);
-        printf("è¯·è¾“å…¥è¦å½•å…¥çš„å…ƒç´ :\n");
+        printf("ÇëÊäÈëÒªÂ¼ÈëµÄÔªËØ:\n");
         scanf("%d",&x);
-        if(chongfu[e-1]){
-            if(Assign(T->left,e,x))printf("æ›´æ”¹æˆåŠŸ\n");
-            else printf("æ›´æ”¹å¤±è´¥\n");
-        }
-        else printf("æœç´¢ä¸åˆ°è¯¥ç»“ç‚¹\n");
+        //if(chongfu[e-1]){
+            if(Assign(T->left,e,x))printf("¸ü¸Ä³É¹¦\n");
+            else printf("¸ü¸ÄÊ§°Ü,ËÑË÷²»µ½¸Ã½áµã\n");
+        //}
+        //else printf("\n");
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 10:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„å…³é”®å­—:\n");
+        printf("ÇëÊäÈëÒª²éÕÒµÄ¹Ø¼ü×Ö:\n");
         scanf("%d",&e);
         if(chongfu[e-1]){
             TreeNode* p=GetSibling(T->left,e);
             if(p)
-            printf("è¯¥ç»“ç‚¹å…„å¼Ÿç»“ç‚¹ä¸ºï¼š%d\nå­˜å‚¨çš„å…ƒç´ æ˜¯:%d\n",p->key,p->elem->e);
-            else printf("è¯¥ç»“ç‚¹æ²¡æœ‰å…„å¼Ÿç»“ç‚¹\n");
+            printf("¸Ã½áµãĞÖµÜ½áµãÎª£º%d\n´æ´¢µÄÔªËØÊÇ:%d\n",p->key,p->elem->e);
+            else printf("¸Ã½áµãÃ»ÓĞĞÖµÜ½áµã\n");
         }
-        else printf("æœç´¢ä¸åˆ°è¯¥ç»“ç‚¹\n");
+        else printf("ËÑË÷²»µ½¸Ã½áµã\n");
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 11:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        printf("è¯·è¾“å…¥ä½ è¦æ’å…¥ä½ç½®çš„ç»“ç‚¹:\n");
+        printf("ÇëÊäÈëÄãÒª²åÈëÎ»ÖÃµÄ½áµã:\n");
         scanf("%d",&e);
         if(chongfu[e-1]){
             int LR;
             int a;
-            printf("è¯·è¾“å…¥è¦æ’å…¥çš„ä½ç½®ï¼ˆå·¦å­æ ‘ä¸º0ï¼Œå³å­æ ‘ä¸º1ï¼‰:\n");
+            printf("ÇëÊäÈëÒª²åÈëµÄÎ»ÖÃ£¨×ó×ÓÊ÷Îª0£¬ÓÒ×ÓÊ÷Îª1£©:\n");
             scanf("%d",&LR);
-            printf("è¯·è¾“å…¥è¦è¾“å…¥çš„ç»“ç‚¹å…³é”®å­—å’Œå…ƒç´ ï¼š\n");
+            printf("ÇëÊäÈëÒªÊäÈëµÄ½áµã¹Ø¼ü×ÖºÍÔªËØ£º\n");
             scanf("%d%d",&a,&x);
             if(chongfu[a-1]==0){
                 TreeNode *c=(TreeNode*)malloc(sizeof(TreeNode));
@@ -392,127 +379,120 @@ while(op){
                 c->elem->e=x;
                 c->key=a;
                 InsertNode(T->left,e,LR,c);
-                printf("æ’å…¥æˆåŠŸ\n");
+                printf("²åÈë³É¹¦\n");
                 T->key++;
                 chongfu[a-1]=2;
             }
-            else printf("ç»“ç‚¹é‡å¤\n");
+            else printf("½áµãÖØ¸´\n");
         }
-        else printf("æœç´¢ä¸åˆ°è¯¥ç»“ç‚¹\n");
+        else printf("ËÑË÷²»µ½¸Ã½áµã\n");
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 12:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        printf("è¯·è¾“å…¥è¦åˆ é™¤ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+        printf("ÇëÊäÈëÒªÉ¾³ı½áµãµÄ¹Ø¼ü×Ö£º\n");
         scanf("%d",&e);
         if(chongfu[e-1]) {
             DeleteNode(T,e);
             chongfu[e-1]=0;
             T->key--;
-            printf("åˆ é™¤æˆåŠŸ\n");
+            printf("É¾³ı³É¹¦\n");
         }
-        else printf("æœç´¢ä¸åˆ°è¯¥ç»“ç‚¹\n");
+        else printf("ËÑË÷²»µ½¸Ã½áµã\n");
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 13:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
         PreOrderTraverse(T->left);
-        printf("\nä¸€å…±%dä¸ªå…ƒç´ \n",T->key);
+        printf("\nÒ»¹²%d¸öÔªËØ\n",T->key);
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 14:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
         InOrderTraverse(T->left);
-        printf("\nä¸€å…±%dä¸ªå…ƒç´ \n",T->key);
+        printf("\nÒ»¹²%d¸öÔªËØ\n",T->key);
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 15:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
         PostOrderTraverse(T->left);
-        printf("\nä¸€å…±%dä¸ªå…ƒç´ \n",T->key);
+        printf("\nÒ»¹²%d¸öÔªËØ\n",T->key);
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 16:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
         LevelOrderTraverse(T->left);
-        printf("\nä¸€å…±%dä¸ªå…ƒç´ \n",T->key);
+        printf("\nÒ»¹²%d¸öÔªËØ\n",T->key);
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 101:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        printf("è¯·è¾“å…¥è¦å­˜å‚¨çš„æ–‡ä»¶ï¼š\n");
+        printf("ÇëÊäÈëÒª´æ´¢µÄÎÄ¼ş£º\n");
         scanf("%s",string);
         if((fp=fopen(string,"w"))==NULL){
-            printf("æ‰“å¼€æ–‡ä»¶å¤±è´¥\n");
+            printf("´ò¿ªÎÄ¼şÊ§°Ü\n");
             getchar();getchar();
             break;
         }
         fprintf(fp,"%d\n",T->key);
         preprint(fp,T->left);
-        printf("å·²ç»å†™å…¥æ–‡ä»¶%s",string);
+        printf("ÒÑ¾­Ğ´ÈëÎÄ¼ş%s",string);
 		fclose(fp);
     }
-    if(flag==ERROR) printf("æ ‘ä¸å­˜åœ¨\n");
-    if(flag==TRUE) printf("æ ‘ä¸ºç©º\n");
+    if(flag==ERROR) printf("Ê÷²»´æÔÚ\n");
+    if(flag==TRUE) printf("Ê÷Îª¿Õ\n");
     getchar();getchar();
     break;
     case 102:
-        printf("è¯·è¾“å…¥è¦è¯»å–çš„æ–‡ä»¶ï¼š\n");
+        printf("ÇëÊäÈëÒª¶ÁÈ¡µÄÎÄ¼ş£º\n");
         scanf("%s",string);
         if((fp=fopen(string,"r"))==NULL){
-            printf("è¯·è¾“å…¥æ­£ç¡®çš„æ–‡ä»¶ï¼Œæ‰“å¼€å¤±è´¥\n");
+            printf("ÇëÊäÈëÕıÈ·µÄÎÄ¼ş£¬´ò¿ªÊ§°Ü\n");
             getchar();getchar();
             break;
         }
-        for(i=0;i<100;i++) tree[i]=0;
-        for(i=0;i<50;i++) chongfus[i]=0;
         fscanf(fp,"%d",&n);
         for(i=0;i<n;i++){
             fscanf(fp,"%d",&k);
-            chongfus[k-1]++;
             treeelem[k-1]=(Node*)malloc(sizeof(Node));
             fscanf(fp,"%d",&(treeelem[k-1]->e));  
         }
         for(i=1;i<2*n;i++){
             fscanf(fp,"%d",&tree[i]);
         }
-        printf("æ ‘å·²ç»è¯»å…¥äº†definitionï¼Œè¯·åˆ›å»ºæ ‘\n");
+        printf("Ê÷ÒÑ¾­¶ÁÈëÁËdefinition£¬Çë´´½¨Ê÷\n");
         fclose(fp);
-        CreateBiTree(T,tree,treeelem,n);
-        for(i=0;i<n;i++) chongfu[i]=chongfus[i];
-        for(i=0;i<n;i++)printf("%d ",treeelem[i]->e);
-    for(i=1;i<=2*n+1;i++)printf("%d ",tree[i]);
     getchar();getchar();
     break;
     case 0:
     getchar();getchar();
     break;
     default:
-    printf("è¯·è¾“å…¥æ­£ç¡®çš„å€¼\n");
+    printf("ÇëÊäÈëÕıÈ·µÄÖµ\n");
     getchar();getchar();
     break;
     }
@@ -525,11 +505,11 @@ status check(int *tree,int n){
     int stackj[100];
     for(i=0,p=stackj,q=tree+1;i<2*(n+1)-1;i++){
         /*if(p==stackj&&(q==tree+1||tree==tree+2*(n+1))){
-            printf("æ ‘å¯ä»¥åˆ›å»º\n");
+            printf("Ê÷¿ÉÒÔ´´½¨\n");
             break;
         }
         if(p==stackj&&(q!=tree+1&&tree!=tree+2*(n+1))){
-            printf("æ ‘ä¸å¯ä»¥åˆ›å»º\n");
+            printf("Ê÷²»¿ÉÒÔ´´½¨\n");
             break;
         }*/
         *p=*q;
@@ -564,8 +544,10 @@ status CreateBiTree(TreeNode* &T,int* tree,Node** treeelem,int n){
     TreeNode* t=T;
     for(i=1;i<=2*n;i++){
         if(tree[i]!=0){
-            if(flag){
+            if(flag==1){ 
                 t->right=(TreeNode*)malloc(sizeof(TreeNode));
+                t->right->left=NULL;
+                t->right->right=NULL;
                 t->right->key=tree[i];
                 t->right->elem=treeelem[tree[i]-1];
                 push(t->right,c);
@@ -574,13 +556,15 @@ status CreateBiTree(TreeNode* &T,int* tree,Node** treeelem,int n){
             }
             else{
                 t->left=(TreeNode*)malloc(sizeof(TreeNode));
+                t->left->left=NULL;
+                t->left->right=NULL;
                 t->left->key=tree[i];
                 t->left->elem=treeelem[tree[i]-1];
                 push(t->left,c);
                 t=t->left;
             }
         }
-        if(tree[i]==0){
+        else{
             t=topAndpop(c);
             flag=1;
         }
@@ -779,16 +763,16 @@ status DeleteNode(TreeNode* &T,int e){
 
 status PreOrderTraverse(TreeNode* T){
     TreeNode* t = T;
-    STACK *c= createStack(50);    //åˆ›å»ºå¹¶åˆå§‹åŒ–å †æ ˆS
+    STACK *c= createStack(50);    //´´½¨²¢³õÊ¼»¯¶ÑÕ»S
     while(t || !isEmpty(c)){
-        while(t){        //ä¸€ç›´å‘å·¦å¹¶å°†æ²¿é€”èŠ‚ç‚¹è®¿é—®ï¼ˆæ‰“å°ï¼‰åå‹å…¥å †æ ˆ 
+        while(t){        //Ò»Ö±Ïò×ó²¢½«ÑØÍ¾½Úµã·ÃÎÊ£¨´òÓ¡£©ºóÑ¹Èë¶ÑÕ» 
             printf("%d  %d\n", t->key,t->elem->e);
             push(t, c);
             t = t->left;
         }
         if (!isEmpty(c)){
-            t = topAndpop(c);    //èŠ‚ç‚¹å¼¹å‡ºå †æ ˆ
-            t = t->right;  //è½¬å‘å³å­æ ‘
+            t = topAndpop(c);    //½Úµãµ¯³ö¶ÑÕ»
+            t = t->right;  //×ªÏòÓÒ×ÓÊ÷
         }
     }
 }
@@ -820,7 +804,7 @@ status LevelOrderTraverse(TreeNode* T){
     int i=BiTreeDepth(T);
     int j;
     for(j=1;j<=i;j++){
-        printf("ç¬¬%då±‚ï¼š",j);
+        printf("µÚ%d²ã£º",j);
         _LevelOrderTraverse(T,j);
         printf("\n");
     }
@@ -829,29 +813,29 @@ status LevelOrderTraverse(TreeNode* T){
 
 status preprint(FILE *fp,TreeNode* T){
     TreeNode* t = T;
-    STACK *c= createStack(50);    //åˆ›å»ºå¹¶åˆå§‹åŒ–å †æ ˆS
+    STACK *c= createStack(50);    //´´½¨²¢³õÊ¼»¯¶ÑÕ»S
     while(t || !isEmpty(c)){
-        while(t){        //ä¸€ç›´å‘å·¦å¹¶å°†æ²¿é€”èŠ‚ç‚¹è®¿é—®ï¼ˆæ‰“å°ï¼‰åå‹å…¥å †æ ˆ 
+        while(t){        //Ò»Ö±Ïò×ó²¢½«ÑØÍ¾½Úµã·ÃÎÊ£¨´òÓ¡£©ºóÑ¹Èë¶ÑÕ» 
             fprintf(fp,"%d  %d\n", t->key,t->elem->e);
             push(t, c);
             t = t->left;
         }
         if (!isEmpty(c)){
-            t = topAndpop(c);    //èŠ‚ç‚¹å¼¹å‡ºå †æ ˆ
-            t = t->right;  //è½¬å‘å³å­æ ‘
+            t = topAndpop(c);    //½Úµãµ¯³ö¶ÑÕ»
+            t = t->right;  //×ªÏòÓÒ×ÓÊ÷
         }
     }
     t = T;
     while(t || !isEmpty(c)){
-        while(t){        //ä¸€ç›´å‘å·¦å¹¶å°†æ²¿é€”èŠ‚ç‚¹è®¿é—®ï¼ˆæ‰“å°ï¼‰åå‹å…¥å †æ ˆ 
+        while(t){        //Ò»Ö±Ïò×ó²¢½«ÑØÍ¾½Úµã·ÃÎÊ£¨´òÓ¡£©ºóÑ¹Èë¶ÑÕ» 
             fprintf(fp,"%d ",t->key);
             push(t, c);
             t = t->left;
         }
         if (!isEmpty(c)){
             fprintf(fp,"0 ");
-            t = topAndpop(c);    //èŠ‚ç‚¹å¼¹å‡ºå †æ ˆ
-            t = t->right;  //è½¬å‘å³å­æ ‘
+            t = topAndpop(c);    //½Úµãµ¯³ö¶ÑÕ»
+            t = t->right;  //×ªÏòÓÒ×ÓÊ÷
         }
     }
 }
