@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <stdlib.h>
-/*¶¨Òå¸÷Àà³£Á¿*/
+/*å®šä¹‰å„ç±»å¸¸é‡*/
 #define TRUE 1
 #define FALSE 0
 #define OK 1
@@ -17,12 +17,114 @@ typedef struct Node
 }Node;
 typedef struct TreeNode
 {
-    char key='@';
+    int key=0;
     struct TreeNode *left=NULL,*right=NULL;
     Node* elem;
 }TreeNode;
 
-status check(int* treepre,int* treein,int n);
+#define EmptyTOS    -1  //ç©ºæ ˆ
+#define MinStackSize    5   //æ ˆçš„æœ€å°å€¼
+
+typedef TreeNode* elementType;    //æ•°æ®ç±»å‹
+
+typedef struct stackRecord
+{
+    int capacity;//å®¹é‡
+    int stackTop;//æ ˆé¡¶
+    elementType *array; 
+}STACK;
+
+int isEmpty(STACK *s);  //åˆ¤ç©º
+int isFull(STACK *s);   //åˆ¤æ»¡
+STACK *createStack(int maxElements);    //æ ˆçš„åˆ›å»º
+void disposeStack(STACK *s);        //æ ˆçš„é‡Šæ”¾
+void makeEmpty(STACK *s);       //åˆ›å»ºç©ºæ ˆ
+void push(elementType element, STACK *s);//å…¥æ ˆ
+elementType top(STACK *s);      //è¿”å›æ ˆé¡¶å…ƒç´ 
+void pop(STACK *s);         //å‡ºæ ˆ
+elementType topAndpop(STACK *s);    //å‡ºæ ˆå¹¶è¿”å›æ ˆé¡¶å…ƒç´ 
+
+int isEmpty(STACK *s)
+{
+    return (s->stackTop == EmptyTOS);
+}
+
+int isFull(STACK *s)
+{
+    return (s->stackTop == s->capacity -1);
+}
+
+STACK *createStack(int maxElements)
+{
+    STACK *s;
+    if(maxElements < MinStackSize) {
+        printf("Stack size si too small\n");    
+        return NULL;
+    }
+    s = (STACK *)malloc(sizeof(struct stackRecord));
+    s->array = (elementType *)malloc(sizeof(elementType) * maxElements);
+    s->capacity = maxElements;
+    makeEmpty(s);
+
+    return s;
+
+}
+void disposeStack(STACK *s)
+{
+    if(s != NULL) {
+        free(s->array); 
+        free(s);
+    }
+}
+
+void makeEmpty(STACK *s)
+{
+    if(s != NULL) {
+        s->stackTop = EmptyTOS; 
+    }
+}
+
+void push(elementType element, STACK *s)
+{
+    if(!isFull(s)) {
+        s->stackTop++;
+        s->array[s->stackTop] = element;
+    } else {
+        printf("full stack\n");
+    }
+}
+
+elementType top(STACK *s)
+{
+    if(!isEmpty(s)) {
+        return s->array[s->stackTop];   
+    } else {
+        printf("empty stack\n");
+        return 0;
+    }
+}
+
+void pop(STACK *s)
+{
+    if(!isEmpty(s))
+        s->stackTop--;  
+    else
+        printf("empty stack\n");
+}
+
+elementType topAndpop(STACK *s)
+{
+    if(!isEmpty(s)) {
+        return s->array[s->stackTop--];
+    } else {
+        printf("empty stack\n");    
+        return 0;
+    }
+}
+
+//æ ˆå®šä¹‰å®Œæˆ
+
+status jiancha(int treepre[],int treein[],int n);
 status CreateBiTree(TreeNode* &T,int* treepre,int* treein,int n);
 status DestroyBiTree(TreeNode* &T);
 status ClearBiTree (TreeNode* &T);
@@ -38,9 +140,9 @@ int treepre[n],treein[n];
 int chongfu[n];
 Node* treeelem[n];
 int flag;
-ElemType e,x; //¶¨ÒåÔªËØÀàĞÍ£¬ÓÃÀ´½øĞĞÖ®ºó²¿·ÖµÄÊı¾İÔªËØÊä³ö
-char string[100];  //ÓÃÓÚ´æ´¢Ö®ºó»áÊ¹ÓÃµÄÎÄ¼şÃû³Æ
-FILE *fp;  //¶¨ÒåÎÄ¼şÖ¸Õë£¬Ö®ºó½øĞĞÎÄ¼ş²Ù×÷
+ElemType e,x; //å®šä¹‰å…ƒç´ ç±»å‹ï¼Œç”¨æ¥è¿›è¡Œä¹‹åéƒ¨åˆ†çš„æ•°æ®å…ƒç´ è¾“å‡º
+char string[100];  //ç”¨äºå­˜å‚¨ä¹‹åä¼šä½¿ç”¨çš„æ–‡ä»¶åç§°
+FILE *fp;  //å®šä¹‰æ–‡ä»¶æŒ‡é’ˆï¼Œä¹‹åè¿›è¡Œæ–‡ä»¶æ“ä½œ
 TreeNode* T=NULL;
 TreeNode* Ts[30]={NULL};
 while(op){
@@ -48,7 +150,7 @@ while(op){
     system("cls"); printf("\n\n");
     printf("      Menu for Bitree On Sequence Structure \n");
 	printf("-------------------------------------------------\n");
-    printf("      1.DefineBiTree       2.\n");
+    printf("      1.DefineBiTree       2.Switch\n");
     printf("      3.CreateBiTree       4.DestroyBiTree\n");
     printf("      5.ClearBiTree        6.BiTreeEmpty\n");
     printf("      6.BiTreeDepth        7.LocateNode\n");
@@ -57,55 +159,55 @@ while(op){
     printf("      12.PreOrderTraverse  13.InOrderTraverse\n");
     printf("      14.PostOrderTraverse 15.LevelOrderTraverse\n");
     printf("-------------------------------------------------\n");
-    printf("      101.´æ´¢Á´±í          102.¶ÁÈ¡Á´±í\n");
-    printf("ÇëÑ¡ÔñÄãµÄ²Ù×÷[0~12]:");
+    printf("      101.å­˜å‚¨é“¾è¡¨          102.è¯»å–é“¾è¡¨\n");
+    printf("è¯·é€‰æ‹©ä½ çš„æ“ä½œ[0~12]:");
 	scanf("%d",&op);
     switch(op)
     {
     case 1:
-    /*printf("ÇëÊäÈëÊ÷µÄ½Úµã¸öÊı£º\n");
+    /*printf("è¯·è¾“å…¥æ ‘çš„èŠ‚ç‚¹ä¸ªæ•°ï¼š\n");
     scanf("%d",&n);
     for(i=0;i<n;i++) chongfu[i]=0;
-    printf("ÇëÊäÈëÊ÷µÄ¹Ø¼ü×ÖºÍÊı¾İ£¨ÓÃ¿Õ¸ñ·Ö¸ô£¬»»ĞĞ½øĞĞÇø·Ö£©£º\n");
+    printf("è¯·è¾“å…¥æ ‘çš„å…³é”®å­—å’Œæ•°æ®ï¼ˆç”¨ç©ºæ ¼åˆ†éš”ï¼Œæ¢è¡Œè¿›è¡ŒåŒºåˆ†ï¼‰ï¼š\n");
     for(i=0;i<n;i++){
         scanf("%d",&j);
         if(chongfu[j-1]==0) chongfu[j-1]++;
         else{
-            printf("³öÏÖÖØ¸´¹Ø¼ü×Ö\n");
+            printf("å‡ºç°é‡å¤å…³é”®å­—\n");
             scanf("%d",&j);
             goto tiaochu;
         }
         treeelem[j-1]=(Node*)malloc(sizeof(Node));
         scanf("%d",&treeelem[j-1]->e);
     }*/
-    printf("ÇëÊäÈë¶ş²æÊ÷µÄÏÈĞò±éÀú£º\n");
+    printf("è¯·è¾“å…¥äºŒå‰æ ‘çš„å…ˆåºéå†ï¼š\n");
     for(i=0;i<n;i++) scanf("%d",&treepre[i]);
     /*for(i=0;i<n;i++){
         if(chongfu[treepre[i]-1]==1) chongfu[treepre[i]-1]++;
         else if(chongfu[treepre[i]-1]==0){
-            printf("ÊäÈëÁËÎ´³öÏÖµÄ¹Ø¼ü×Ö\n");
+            printf("è¾“å…¥äº†æœªå‡ºç°çš„å…³é”®å­—\n");
             goto tiaochu;
             }
         else {
-            printf("ÖØ¸´¹Ø¼ü×Ö\n");
+            printf("é‡å¤å…³é”®å­—\n");
             goto tiaochu;
         }
     }*/
-    printf("ÇëÊäÈë¶ş²æÊ÷µÄÖĞĞò±éÀú£º\n");
+    printf("è¯·è¾“å…¥äºŒå‰æ ‘çš„ä¸­åºéå†ï¼š\n");
     for(i=0;i<n;i++) scanf("%d",&treein[i]);
     /*for(i=0;i<n;i++){
         if(chongfu[treein[i]-1]==2) chongfu[treein[i]-1]++;
         else if(chongfu[treein[i]-1]==0){
-            printf("ÊäÈëÁËÎ´³öÏÖµÄ¹Ø¼ü×Ö\n");
+            printf("è¾“å…¥äº†æœªå‡ºç°çš„å…³é”®å­—\n");
             goto tiaochu;
         }
         else {
-            printf("ÖØ¸´¹Ø¼ü×Ö\n");
+            printf("é‡å¤å…³é”®å­—\n");
             goto tiaochu;
         }
     }*/
-    if(check(treepre,treein,n)) printf("¿ÉÒÔ´´½¨Ê÷\n");
-    else printf("ÎŞ·¨´´½¨Ê÷\n");
+    if(jiancha(treepre,treein,n)==OK) printf("å¯ä»¥åˆ›å»ºæ ‘\n");
+    else printf("æ— æ³•åˆ›å»ºæ ‘\n");
 tiaochu:    getchar();getchar();
     break;
     case 2:
@@ -114,7 +216,7 @@ tiaochu:    getchar();getchar();
 }
 }
 
-status check(int* treepre,int* treein,int n){
+status jiancha(int treepre[],int treein[],int n){
     int i;
     for(i=0;i<n;i++) printf("%d ",treepre[i]);
     for(i=0;i<n;i++) printf("%d ",treein[i]);
@@ -128,5 +230,5 @@ status check(int* treepre,int* treein,int n){
         if(treepre[0]!=treein[i]) i++;
     }
     if(i==n) return FALSE;
-    return check(treepre+1,treein,i)&&check(treepre+1,treein+1+i,n-1-i);
+    return jiancha(treepre+1,treein,i)&&jiancha(treepre+1,treein+1+i,n-1-i);
 }
