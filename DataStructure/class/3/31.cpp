@@ -128,6 +128,7 @@ StackElem topAndpop(STACK *s)
 status check(int *tree,int n);
 status CreateBiTree(TreeNode* &T,int* tree,Node **treeelem,int n);
 status BiTreeTraverse(TreeNode* T);
+status _BiTreeTraverse(TreeNode* T,int i,ElemType* kiss);
 status DestroyBiTree(TreeNode* &T);
 status ClearBiTree (TreeNode* &T);
 status BiTreeEmpty(TreeNode* T);
@@ -144,13 +145,14 @@ status PostOrderTraverse(TreeNode* T);
 status LevelOrderTraverse(TreeNode* T);
 status _LevelOrderTraverse(TreeNode* T,int i);
 status preprint(FILE *fp,TreeNode *T);
+int power(int i,int j);
 
 int main(){
 int op=1;
 int i,j=0,k;
 int n,e;
-int tree[100]={0};
-int chongfu[50]={0},chongfus[50];
+int tree[100]={0},treein[50]={0},treepre[50]={0},treepost[50]={0};
+int chongfu[50]={0};
 int stackj[50]={-1};
 int* p,* q;
 Node* treeelem[100];
@@ -173,20 +175,20 @@ while(op){
     printf("      13.PreOrderTraverse  14.InOrderTraverse\n");
     printf("      15.PostOrderTraverse 16.LevelOrderTraverse\n");
     printf("-------------------------------------------------\n");
-    printf("      101.存储链表          102.读取链表\n");
+    printf("      101.存储先序树        102.读取树\n");
     printf("请选择你的操作:");
 	scanf("%d",&op);
     switch(op)
     {
     case 1:
-    for(i=0;i<50;i++) chongfus[i]=0;
-    //for(i=0;i<50;i++) chongfu[i]=0;
+    for(i=0;i<50;i++) chongfu[i]=0;
+    for(i=0;i<100;i++) tree[i]=0;
     printf("请输入树的节点个数：\n");
     scanf("%d",&n);
     printf("请输入树的关键字和数据（用空格分隔，换行进行区分）：\n");
     for(i=0,flag=0;i<n;i++){
         scanf("%d",&k);
-        if(chongfus[k-1]==0) chongfus[k-1]++;
+        if(chongfu[k]==0) chongfu[k]++;
         else flag++;
         if(!flag){
             treeelem[k-1]=(Node*)malloc(sizeof(Node));
@@ -198,12 +200,16 @@ while(op){
         getchar();getchar();
         break;    
     }
+    printf("1.空子树的先序遍历\n2.先序加中序\n3.中序加后序\n请选择输入的方式:");
+    scanf("%d",&i);
+    if(i<1||i>3) printf("输入正确的值\n");
+    else if(i==1){
         printf("请输入树的带空结点的先序遍历:\n");
         for(i=1,flag=0;i<2*(n+1);i++){
             scanf("%d",&tree[i]);
             if(tree[i]){
-                if (chongfus[tree[i]-1]==2) flag=1;
-                else if (chongfus[tree[i]-1]==1) chongfus[tree[i]-1]++;
+                if (chongfu[tree[i]]==2) flag=1;
+                else if (chongfu[tree[i]]==1) chongfu[tree[i]]++;
                 else flag=2;
             }
         }
@@ -217,11 +223,109 @@ while(op){
             getchar();getchar();
             break;
         }
-        if(check(tree,n)==OK){
-            printf("树可以创建\n");
-            for(i=0;i<n;i++) chongfu[i]=chongfus[i];
+    }
+    if(i==2){
+        flag=0;
+        for(i=0;i<50;i++) treepre[i]=0;
+        for(i=0;i<50;i++) treein[i]=0;
+        printf("请输入先序遍历:\n");
+        for(i=1;i<=n;i++){
+            scanf("%d",&treepre[i]);
+            if(chongfu[treepre[i]]==0) flag=1;
+            else if(chongfu[treepre[i]]==2) flag=2;
+            else chongfu[treepre[i]]++;
         }
-        else printf("树不可以创建，请重新输入\n");    
+        printf("请输入中序遍历:\n");
+        for(i=1;i<=n;i++){
+            scanf("%d",&treein[i]);
+            if(chongfu[treein[i]]==0) flag=1;
+            else if(chongfu[treein[i]]==3) flag=2;
+            else chongfu[treein[i]]++;
+        }
+        if(flag==2){
+            printf("输入了重复的结点\n");
+            getchar();getchar();
+            break;
+        }
+        if(flag==1){
+            printf("输入了不存在的结点\n");
+            getchar();getchar();
+            break;  
+        }
+        int* treep =tree+1;
+        chongfu[0]=4;
+        chongfu[n+1]=4;
+        //for(i=0;i<=100;i++) tree[i]=0;
+        for(i=1,flag=0;i<=n;i++){
+            int abs=0;
+            for(abs=1;;abs++){
+                if(treepre[i]==treein[abs]){
+                    chongfu[treein[abs]]++;
+                    *treep=treepre[i];
+                    treep++;
+                    if(chongfu[treein[abs+1]]==4) flag++;
+                    if(chongfu[treein[abs-1]]==4) {
+                        treep=treep+flag+1;
+                        flag=0;
+                    }
+                    break;
+                }
+            }
+        }
+    } 
+    if(i==3){
+        flag=0;
+        for(i=0;i<59;i++) treepre[i]=0;
+        for(i=0;i<50;i++) treein[i]=0;
+        for(i=0;i<50;i++) treepost[i]=0;
+        printf("请输入中序遍历:\n");
+        for(i=n;i>=1;i--){
+            scanf("%d",&treein[i]);
+            if(chongfu[treein[i]]==0) flag=1;
+            else if(chongfu[treein[i]]==2) flag=2;
+            else chongfu[treein[i]]++;
+        }
+        printf("请输入后序遍历:\n");
+        for(i=n;i>=1;i--){
+            scanf("%d",&treepost[i]);
+            if(chongfu[treepost[i]]==0) flag=1;
+            else if(chongfu[treepost[i]]==3) flag=2;
+            else chongfu[treepost[i]]++;
+        }
+        if(flag==2){
+            printf("输入了重复的结点\n");
+            getchar();getchar();
+            break;
+        }
+        if(flag==1){
+            printf("输入了不存在的结点\n");
+            getchar();getchar();
+            break;
+        }
+        int* treep =tree+1;
+        chongfu[0]=4;
+        chongfu[n+1]=4;
+        //for(i=0;i<=100;i++) tree[i]=0;
+        for(i=1,flag=0;i<=n;i++){
+            int abs=0;
+            for(abs=1;;abs++){
+                if(treepost[i]==treein[abs]){
+                    chongfu[treein[abs]]++;
+                    *treep=treepost[i];
+                    treep++;
+                    if(chongfu[treein[abs+1]]==4) flag++;
+                    if(chongfu[treein[abs-1]]==4) {
+                        treep=treep+flag+1;
+                        flag=0;
+                    }
+                    break;
+                }
+            }
+        }
+        tree[0]=-1;
+    }
+    if(check(tree,n)==OK) printf("树可以创建\n");
+    else printf("树不可以创建，请重新输入\n");    
     getchar();getchar();
     break;
     case 2:
@@ -268,7 +372,7 @@ while(op){
     break;
     case 4:
     flag=BiTreeEmpty(T);
-    if(flag==FALSE){
+    if(flag!=ERROR){
         getchar();
         printf("确认销毁树？（y/n）:\n");
         char c=getchar();
@@ -278,7 +382,6 @@ while(op){
         else printf("停止销毁\n");
     }
     if(flag==ERROR) printf("树不存在\n");
-    if(flag==TRUE) printf("树为空\n");
     getchar();getchar();
     break;
     case 5:
@@ -335,8 +438,8 @@ while(op){
         printf("请输入要录入的元素:\n");
         scanf("%d",&x);
         //if(chongfu[e-1]){
-            if(Assign(T->left,e,x))printf("更改成功\n");
-            else printf("更改失败,搜索不到该结点\n");
+        if(Assign(T->left,e,x)==OK)printf("更改成功\n");
+        else printf("更改失败,搜索不到该结点\n");
         //}
         //else printf("\n");
     }
@@ -349,7 +452,7 @@ while(op){
     if(flag==FALSE){
         printf("请输入要查找的关键字:\n");
         scanf("%d",&e);
-        if(chongfu[e-1]){
+        if(LocateNode(T->left,e)){
             TreeNode* p=GetSibling(T->left,e);
             if(p)
             printf("该结点兄弟结点为：%d\n存储的元素是:%d\n",p->key,p->elem->e);
@@ -366,15 +469,15 @@ while(op){
     if(flag==FALSE){
         printf("请输入你要插入位置的结点:\n");
         scanf("%d",&e);
-        if(chongfu[e-1]){
+        if(LocateNode(T->left,e)){
             int LR;
             int a;
             printf("请输入要插入的位置（左子树为0，右子树为1）:\n");
             scanf("%d",&LR);
             printf("请输入要输入的结点关键字和元素：\n");
             scanf("%d%d",&a,&x);
-            if(chongfu[a-1]==0){
-                TreeNode *c=(TreeNode*)malloc(sizeof(TreeNode));
+            if(LocateNode(T->left,a)==NULL){
+                TreeNode *c=(TreeNode*)calloc(sizeof(TreeNode),1);
                 c->elem=(Node*)malloc(sizeof(Node));
                 c->elem->e=x;
                 c->key=a;
@@ -396,13 +499,12 @@ while(op){
     if(flag==FALSE){
         printf("请输入要删除结点的关键字：\n");
         scanf("%d",&e);
-        if(chongfu[e-1]) {
-            DeleteNode(T,e);
-            chongfu[e-1]=0;
+        if(LocateNode(T,e)==NULL) printf("搜索不到该结点\n");
+        else if(DeleteNode(T,e)==OK){
             T->key--;
             printf("删除成功\n");
         }
-        else printf("搜索不到该结点\n");
+        else printf("删除失败\n");
     }
     if(flag==ERROR) printf("树不存在\n");
     if(flag==TRUE) printf("树为空\n");
@@ -441,7 +543,9 @@ while(op){
     case 16:
     flag=BiTreeEmpty(T);
     if(flag==FALSE){
-        LevelOrderTraverse(T->left);
+        BiTreeTraverse(T->left);
+        printf("\n");
+        PreOrderTraverse(T->left);
         printf("\n一共%d个元素\n",T->key);
     }
     if(flag==ERROR) printf("树不存在\n");
@@ -460,6 +564,7 @@ while(op){
         }
         fprintf(fp,"%d\n",T->key);
         preprint(fp,T->left);
+        fprintf(fp,"0");
         printf("已经写入文件%s",string);
 		fclose(fp);
     }
@@ -481,7 +586,7 @@ while(op){
             treeelem[k-1]=(Node*)malloc(sizeof(Node));
             fscanf(fp,"%d",&(treeelem[k-1]->e));  
         }
-        for(i=1;i<2*n;i++){
+        for(i=1;i<=2*n+1;i++){
             fscanf(fp,"%d",&tree[i]);
         }
         printf("树已经读入了definition，请创建树\n");
@@ -504,14 +609,6 @@ status check(int *tree,int n){
     int* p,* q;
     int stackj[100];
     for(i=0,p=stackj,q=tree+1;i<2*(n+1)-1;i++){
-        /*if(p==stackj&&(q==tree+1||tree==tree+2*(n+1))){
-            printf("树可以创建\n");
-            break;
-        }
-        if(p==stackj&&(q!=tree+1&&tree!=tree+2*(n+1))){
-            printf("树不可以创建\n");
-            break;
-        }*/
         *p=*q;
         p++;
         q++;
@@ -540,14 +637,41 @@ status CreateBiTree(TreeNode* &T,int* tree,Node** treeelem,int n){
     c=createStack(50);
     makeEmpty (c);
     int i,flag=0;
-    T=(TreeNode*)malloc(sizeof(TreeNode));
+    T=(TreeNode*)calloc(sizeof(TreeNode),1);
     TreeNode* t=T;
+    if(tree[0]==-1){
+        for(i=1;i<=2*n;i++){
+            if(tree[i]!=0){
+                if(flag==1){
+                    t->left=(TreeNode*)calloc(sizeof(TreeNode),1);
+                    t->left->key=tree[i];
+                    t->left->elem=treeelem[tree[i]-1];
+                    push(t->left,c);
+                    t=t->left;
+                    flag=0;
+                }
+                else{
+                    t->right=(TreeNode*)calloc(sizeof(TreeNode),1);
+                    t->right->key=tree[i];
+                    t->right->elem=treeelem[tree[i]-1];
+                    push(t->right,c);
+                    t=t->right;
+                }
+            }
+            else{
+                t=topAndpop(c);
+                flag=1;
+            }
+        }
+        T->key=n;
+        T->left=T->right;
+        BiTreeTraverse(T->left);
+        return OK;
+    }
     for(i=1;i<=2*n;i++){
         if(tree[i]!=0){
-            if(flag==1){ 
-                t->right=(TreeNode*)malloc(sizeof(TreeNode));
-                t->right->left=NULL;
-                t->right->right=NULL;
+            if(flag==1){
+                t->right=(TreeNode*)calloc(sizeof(TreeNode),1);
                 t->right->key=tree[i];
                 t->right->elem=treeelem[tree[i]-1];
                 push(t->right,c);
@@ -555,9 +679,7 @@ status CreateBiTree(TreeNode* &T,int* tree,Node** treeelem,int n){
                 flag=0;
             }
             else{
-                t->left=(TreeNode*)malloc(sizeof(TreeNode));
-                t->left->left=NULL;
-                t->left->right=NULL;
+                t->left=(TreeNode*)calloc(sizeof(TreeNode),1);
                 t->left->key=tree[i];
                 t->left->elem=treeelem[tree[i]-1];
                 push(t->left,c);
@@ -571,28 +693,51 @@ status CreateBiTree(TreeNode* &T,int* tree,Node** treeelem,int n){
     }
     T->key=n;
     T->right=T->left;
+    BiTreeTraverse(T->left);
     return OK;
 }
 
-/*status BiTreeTraverse(TreeNode* T){
+status BiTreeTraverse(TreeNode* T){
     int level=BiTreeDepth(T);
-    int i,j,k,s;
+    int i,j,k,s,l,m=2;
+    for(i=1;i<level;i++) m=2*m+4;
     TreeNode* t=T;
-    for(s=1;s<level;s++) printf("\t");
-    printf("%4d\n",t->elem->e);
-    for(i=2,j=2;i<=level;i++,j*=2){
-        for(k=0;k<j/2;k++){
-            for(s=0;s<level-i+1;s++)
+    ElemType kiss[50]={0};
+    for(j=1;j<=level;j++){
+        for(k=0;k<50;k++)kiss[k]=0;
+        printf("第%d层:",j);
+        _BiTreeTraverse(T,j,kiss);
+        for(k=0;k<3*(power(2,level-j)-1);k++) printf(" ");
+        for(l=0;l<power(2,j-1);l++) {
+            if(kiss[l])
+            printf("%-4d",kiss[l]);
+            else printf("    ");
+            for(i=0;i<m;i++) printf(" ");   
         }
+        printf("\n");
+        m=(m-4)/2;
     }
-}*/
+}
+
+status _BiTreeTraverse(TreeNode* T,int i,ElemType* kiss){
+    if(T==NULL||i==0) return 0;
+    ElemType *k=kiss;
+    int j,s=1;
+    for(j=1,s=1;j<i-1;j++)s*=2;
+    if(i==1) *k=T->key;
+    else{
+        _BiTreeTraverse(T->left,i-1,k);
+        _BiTreeTraverse(T->right,i-1,k+s);
+    }
+    return OK;
+}
 
 status DestroyBiTree(TreeNode* &T){
     STACK *c;
     c=createStack(100);
     makeEmpty (c);
-    TreeNode *t=T->left;
-    for(push(t,c),t=t->left;!isEmpty(c);){
+    TreeNode *t=T;
+    for(push(t,c),t=t->left;isEmpty(c)==false;){
         if(t){
             push(t,c);
             t=t->left;
@@ -676,6 +821,7 @@ TreeNode* GetSibling(TreeNode* T,int e){
         p=GetSibling(T->right,e);
         return p;
     }
+    return NULL;
 }
 
 TreeNode* GetParent(TreeNode* T,int e){
@@ -692,6 +838,7 @@ TreeNode* GetParent(TreeNode* T,int e){
         p=GetParent(T->right,e);
         return p;
     }
+    return NULL;
 }
 
 status InsertNode(TreeNode* &T,int e,int LR,TreeNode* &c){
@@ -711,30 +858,9 @@ status InsertNode(TreeNode* &T,int e,int LR,TreeNode* &c){
 }
 
 status DeleteNode(TreeNode* &T,int e){
-    /*TreeNode* t=T;
-    STACK *c;
-    c=createStack(100);
-    makeEmpty (c);
-    int flag=0;
-    for(push(t,c),t=t->left;!isEmpty(c);){
-        if(t){
-            push(t,c);
-            t=t->left;
-        }
-        else for(;top(c)==NULL;){
-            pop(c);
-            TreeNode*p=topAndpop(c);
-            if(p->key==e) flag++;
-            if(flag==1){
-                t=p;
-                break;
-            }
-            else t=p->right;
-        }
-    }*/
     TreeNode*p=GetParent(T,e);
-    if(!p) return ERROR;
-    if(p->left!=NULL) {if(p->left->key==e){
+    if(p==NULL) return ERROR;
+    if(p->left!=NULL&&p->left->key==e){
         TreeNode* q=p->left;
         if(q->left){
             TreeNode *s=q->left;
@@ -745,8 +871,7 @@ status DeleteNode(TreeNode* &T,int e){
         else p->left=q->right;
         free(q);
     }
-    }
-    else if(p->right!=NULL) {if(p->right->key==e){
+    if(p->right!=NULL&&p->right->key==e) {
         TreeNode* q=p->right;
         if(q->left){
             TreeNode *s=q->left;
@@ -756,7 +881,6 @@ status DeleteNode(TreeNode* &T,int e){
         }
         else p->right=q->right;
         free(q);
-    }
     }
     return OK;
 }
@@ -791,7 +915,8 @@ status PostOrderTraverse(TreeNode* T){
     printf("%d  %d\n",T->key,T->elem->e);
 }
 
-status _LevelOrderTraverse(TreeNode* T,int i){
+/*status _LevelOrderTraverse(TreeNode* T,int i){
+    int k;
     if(T==NULL||i==0) return 0;
     if(i==1) printf("%4d%4d  ",T->key,T->elem->e);
     else{
@@ -802,14 +927,14 @@ status _LevelOrderTraverse(TreeNode* T,int i){
 
 status LevelOrderTraverse(TreeNode* T){
     int i=BiTreeDepth(T);
-    int j;
+    int j,k;
     for(j=1;j<=i;j++){
-        printf("第%d层：",j);
+        printf("第%d层",j);
         _LevelOrderTraverse(T,j);
         printf("\n");
     }
     return OK;
-}
+}*/
 
 status preprint(FILE *fp,TreeNode* T){
     TreeNode* t = T;
@@ -838,4 +963,10 @@ status preprint(FILE *fp,TreeNode* T){
             t = t->right;  //转向右子树
         }
     }
+}
+
+int power(int i,int j){
+    int k,s=1;
+    for(k=0;k<j;k++) s*=i;
+    return s;
 }
