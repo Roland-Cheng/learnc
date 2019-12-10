@@ -27,19 +27,19 @@ typedef struct VNode
     ArcNode *firstarc;//结点的第一条弧
     ElemType data;//结点数据
     GElemType key;//结点的关键值
-}VNode,NodeList[MAX_GRAPH_SIZE];
+}VNode,NodeList[MAX_GRAPH_SIZE];//NodeList为结点数组
 typedef struct
 {
     NodeList vert;//图的结点集
     int vexnum,arcnum;//图的结点数，弧的数目
-    char name[30];
+    char name[30];//图名
 }Graph;
 typedef struct
 {
-    Graph *elem;
-    int length;
-    int graphsize;
-}AGraph;
+    Graph *elem;//图的数组
+    int length;//图组的长度,但是后面没有用,使用了全局变量来记录
+    int graphsize;//图组的最大长度
+}AGraph;//全部的图
 
 status CreateGraph(Graph &G,GElemType V[],GElemType VR[][4]);//根据图的结点集和弧集创建一个有向图
 status DestroyGraph(Graph &G);//销毁目标图
@@ -57,28 +57,27 @@ status OpenFile(Graph &G);//从文件中读取数据
 status SaveFile(Graph G);//把数据存入文件
 int find(AGraph &G,char names[]);//查找目标图
 status visit(GElemType e,ElemType data);//访问输出数据
-void meset(int flag[]);//清空数组
-int len(char V[]);//求数组长度
+void reset(int flag[]);//清空数组
 void DFS(Graph G,ElemType v);//辅助深度优先遍历函数
 void Print(Graph G);//打印图的邻接表
 
 int flag[100],isvisit[100],num[100];//标记数组，是否访问数组，删除结点数量
 GElemType vnode[MAX_GRAPH_SIZE+1];//结点集1
 GElemType vr[MAX_GRAPH_SIZE][4];//弧集
-int graphnum;//图的数量
+int graphnum;//全局变量用来记录图组的长度
 AGraph G1;//图组
 
 int main()
 {
     int op,i,t,w=0,n,flag1=0;
-    char name1[50],name2[50],e,c;
-    G1.length=0;
-    G1.graphsize=GRAPHINCREMENT;
-    G1.elem=(Graph*)malloc(G1.graphsize*sizeof(Graph));//创建一个空的图组
+    char name1[50],name2[50],e,c;//name1用来记录当前使用的图名
+    G1.length=0;//没用到这一个
+    G1.graphsize=GRAPHINCREMENT;//将图组的大小初始化为10
+    G1.elem=(Graph*)calloc(G1.graphsize*sizeof(Graph),1);//创建一个空的图组
     while(op)
     {
         system("cls");putchar('\n');
-        printf("\tWelcome to use Menu for Graph Building!\n");
+        printf("\tWelcome to use Menu for Graph Building!\n");//打印系统的界面
         printf("---------------------------------------------------------\n");
         printf("\t1.CreateGraph\t\t  2.DestroyGraph\n");
         printf("\t3.LocateVex\t\t  4.PutVex\n");
@@ -98,17 +97,17 @@ int main()
         case 0://为0退出循环
             break;
         case 1:
-            printf("请输入图的名称。默认为创建有向图。\n");
-            scanf("%s",name2);//读取图的名称
+            printf("请输入图的名称(默认为创建有向图):\n");
+            scanf("%s",name2);//将图的名字先读入一个暂时变量
             t=find(G1,name2);
             if(t!=-1){
-                printf("图的名字重复，自动切换到输入的图\n");
+                printf("图的名字重复，自动切换到输入的图\n");//如果发现重复命名,那就切换到刚刚输入的图中
                 strcpy(name1,name2);
                 getchar();getchar();
                 break;
             }
-            strcpy(G1.elem[graphnum].name,name2);
-            printf("请选择读取方式：1.键盘赋值 2.文件读取\n");//选择读取方式
+            strcpy(G1.elem[graphnum].name,name2); //如果能够创建,就将图名赋值,开始创建图
+            printf("1.键盘赋值 2.文件读取\n请选择读取方式：");//选择读取方式
             scanf("%d",&t);
             while(t!=1&&t!=2)//输入数字不对重新输入
             {
@@ -126,42 +125,42 @@ int main()
                 }
                 printf("请输入图的结点关键值(大写英文字母):\n");
                 getchar();
-                int flag2=0;
+                int flag2=0;//用来标记是否出现重复的结点
                 for(i=0;i<n;i++)
                 {
                     scanf(" %c",&vnode[i]);//获得结点关键值
-                    if(vnode[i]<'A'||vnode[i]>'Z') {
+                    if(vnode[i]<'A'||vnode[i]>'Z') {//输入的结点关键值不符合要求
                         flag1=1;
                         continue;
                     }
                     if(flag[vnode[i]-'A'])//标记数组相应位置不为0代表该关键值已经输入过
                     {
                         printf("数据重复，创建失败！\n");
-                        flag2=1;//flag设为1
+                        flag2=1;//flag2设为1
                         continue;
                     }
                     flag[vnode[i]-'A']++;//标记数组相应位置加1
                 }
-                if(flag1)//flag为1证明出错，直接退出
+                if(flag1)//flag1为1证明输入不满足要求，直接退出
                 {
-                    meset(flag);//清空标记数组
-                    printf("请输入大写的字母\n");
+                    reset(flag);//清空标记数组
+                    printf("请输入大写的字母:\n");
                     getchar();getchar();
                     break;
                 }
-                if(flag2)//flag为1证明出错，直接退出
+                if(flag2)//flag2为1证明重复，直接退出
                 {
-                    meset(flag);//清空标记数组
+                    reset(flag);//清空标记数组
                     printf("输入了重复的关键字\n");
                     getchar();getchar();
                     break;
                 }
-                vnode[i]='\0';
-                printf("结点输入完毕，开始输入图的边。\n");
-                printf("请输入边的两个结点的关键值，两个值之间以空格间隔，输入 # 以结束。则输入的第一个结点值为弧尾。\n");
+                vnode[i]='\0';//将文件尾标记上
+                printf("结点输入完毕，开始输入图的边\n");
+                printf("请输入边的两个结点的关键值，两个值之间以空格间隔，输入以#结束。则输入的第一个结点值为弧尾\n");
                 for(i=0,flag1=0;;)
                 {
-                    scanf(" %c",&vr[i][0]);//接受弧头关键值
+                    scanf(" %c",&vr[i][0]);//接受弧尾关键值
                     if(vr[i][0]=='#')//关键值为#代表输入完毕，结束
                         break;
                     scanf(" %c",&vr[i][1]);//接受第二个关键值
@@ -170,18 +169,18 @@ int main()
                         printf("你输入的关键值不存在！请重新输入。\n");
                         printf("如果想退出，请输入0\n");
                         scanf(" %c",&vr[i][0]);//重新输入
-                        if(vr[i][0]=='0') {
+                        if(vr[i][0]=='0') {//如果输入为0就退出
                             flag1=1;
                             break;
                         }
-                        scanf(" %c",&vr[i][1]);    
+                        scanf(" %c",&vr[i][1]);//重新输入弧头结点 
                     }
                     if(flag1) break;
                     i++;
                 }
                 if(flag1){
-                    printf("退出创建图\n");
-                    meset(flag);
+                    printf("退出创建图\n");//中途退出
+                    reset(flag);
                     getchar();getchar();
                     break;
                 }
@@ -193,9 +192,9 @@ int main()
                     break;
                 }
                 printf("创建成功！\n");//提示创建成功
-                strcpy(name1,name2);
+                strcpy(name1,name2);//将已经创建好的图名字赋值给当前主图
                 graphnum++;//图的数量加一
-                meset(flag);//清空标记数组
+                reset(flag);//清空标记数组
                 getchar();getchar();
                 break;
             }
@@ -209,8 +208,6 @@ int main()
                 break;
             }
         case 2:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -226,13 +223,11 @@ int main()
             }
             printf("销毁成功！\n");
             for(i=t;i<graphnum-1;i++)//图组元素覆盖原删除的元素
-                G1.elem[i]=G1.elem[i+1];
+                G1.elem[i]=G1.elem[i+1];//将后面的图向前挪动
             graphnum--;//图的数量减一
             getchar();getchar();
             break;
         case 3:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -240,7 +235,7 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("请输入要定位的顶点的关键值。\n");
+            printf("请输入要定位的顶点的关键值:");
             scanf(" %c",&e);//获得目标结点关键值
             w=LocateVex(G1.elem[t],e);//获得结点的位置
             if(w==-1)//-1代表结点不存在
@@ -250,8 +245,6 @@ int main()
             getchar();getchar();
             break;
         case 4:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -259,13 +252,13 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("请输入要赋值结点的关键值。\n");
+            printf("请输入要赋值结点的关键值:");
             scanf(" %c",&e);//获得目标结点关键值
             if(LocateVex(G1.elem[t],e)==-1)//-1代表没有找到目标结点
                 printf("没有找到该结点！\n");
             else
             {
-                printf("请输入要赋的值。\n");
+                printf("请输入要赋的值:");
                 scanf("%d",&w);//获得结点的值
                 if(!PutVex(G1.elem[t],e,w))//赋值失败提示出错
                     printf("赋值失败！\n");
@@ -275,8 +268,6 @@ int main()
             getchar();getchar();
             break;
         case 5:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -284,14 +275,14 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("请输入要查询的结点的位序。\n");
+            printf("请输入要查询的结点的位序:");
             scanf(" %d",&w);//获得目标结点位序
-            w--;
+            w--;//将输入值调整为数组的范围
             if(w<0||w>G1.elem[t].vexnum)//位序不在合法范围内
                 printf("没有找到该结点！\n");
             else
             {
-                i=FirstAdjVex(G1.elem[t],w);
+                i=FirstAdjVex(G1.elem[t],w);//找到下一个结点的位序
                 if(i==-1)//-1代表没有找到目标结点
                     printf("没有找到目标结点！\n");
                 else
@@ -300,8 +291,6 @@ int main()
             getchar();getchar();
             break;
         case 6:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -309,7 +298,7 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("请输入要查询的结点的位序。\n");
+            printf("请输入要查询的结点的位序");
             scanf(" %d",&w);//获得第一个目标结点位序
             w--;
             if(LocateVex(G1.elem[t],G1.elem[t].vert[w].key)==-1)//-1代表没有找到目标结点
@@ -326,7 +315,7 @@ int main()
                 getchar();getchar();
                 break;
             }
-            i=NextAdjVex(G1.elem[t],w,n);//获得结点下一条弧
+            i=NextAdjVex(G1.elem[t],w,n);//获得结点下一条弧指向的位序
             if(i==-1)
                 printf("目标结点为空。\n");
             else
@@ -334,8 +323,6 @@ int main()
             getchar();getchar();    
             break;
         case 7:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -343,7 +330,7 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("请输入要插入的结点的关键值。\n");
+            printf("请输入要插入的结点的关键值:");
             scanf(" %c",&e);//获得结点关键值
             w=0;
             for(i=0;i<G1.elem[t].vexnum;i++)//检索目标结点是否已经出现在图中
@@ -362,8 +349,6 @@ int main()
             getchar();getchar();
             break;
         case 8:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -371,7 +356,7 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("请输入要删除的结点的关键值。\n");
+            printf("请输入要删除的结点的关键值:");
             scanf(" %c",&e);//获得要删除结点的关键值
             w=LocateVex(G1.elem[t],e);//获得结点的位置
             if(w==-1){//-1代表结点不存在
@@ -382,12 +367,10 @@ int main()
             if(!DeleteVex(G1.elem[t],e))//删除失败提示
                 printf("删除失败！\n");
             else
-                printf("删除成功！\n"),num[t]++;//删除成功提示
+                printf("删除成功！\n"),num[t]++;//删除成功提示,并将该图删除的结点数量加一
             getchar();getchar();
             break;
         case 9:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -395,17 +378,17 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("请输入要插入弧的两个结点，第一个为弧尾，第二个为弧头，空格隔开。\n");
+            printf("请输入要插入弧的两个结点，第一个为弧尾，第二个为弧头，空格隔开:\n");
             scanf(" %c %c",&e,&c);//获得弧尾和弧头
             w=LocateVex(G1.elem[t],e);//获得结点的位置
             if(w==-1){//-1代表结点不存在
-                printf("没有找到弧头顶点！\n");
+                printf("没有找到弧尾顶点！\n");
                 getchar();getchar();
                 break;
             }
             w=LocateVex(G1.elem[t],c);//获得结点的位置
             if(w==-1){//-1代表结点不存在
-                printf("没有找到弧尾顶点！\n");
+                printf("没有找到弧头顶点！\n");
                 getchar();getchar();
                 break;
             }
@@ -416,8 +399,6 @@ int main()
             getchar();getchar();
             break;
         case 10:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -425,17 +406,17 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("请输入要删除的弧的弧尾和弧头。\n");
+            printf("请输入要删除的弧的弧尾和弧头:\n");
             scanf(" %c %c",&e,&c);//获得目标弧尾和弧头
             w=LocateVex(G1.elem[t],e);//获得结点的位置
             if(w==-1){//-1代表结点不存在
-                printf("没有找到弧头顶点！\n");
+                printf("没有找到弧尾顶点！\n");
                 getchar();getchar();
                 break;
             }
             w=LocateVex(G1.elem[t],c);//获得结点的位置
             if(w==-1){//-1代表结点不存在
-                printf("没有找到弧尾顶点！\n");
+                printf("没有找到弧头顶点！\n");
                 getchar();getchar();
                 break;
             }
@@ -446,8 +427,6 @@ int main()
             getchar();getchar();
             break;
         case 11:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -462,8 +441,6 @@ int main()
             getchar();getchar();
             break;
         case 12:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -478,8 +455,6 @@ int main()
             getchar();getchar();
             break;
         case 13:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -487,7 +462,7 @@ int main()
                 getchar();getchar();
                 break;
             }
-            printf("确定要从文件读取，这会清空图原有的内容？（Y/N）\n");//防止用户丢失数据再一次确认
+            printf("确定要从文件读取，这会清空当前图原有的内容？（Y/N）\n");//防止用户丢失数据再一次确认
             scanf(" %c",&e);
             if(e!='Y'){//用户决定停止操作则退出
                 getchar();getchar();
@@ -495,7 +470,7 @@ int main()
             }
             DestroyGraph(G1.elem[t]);//销毁原来的图
             if(!OpenFile(G1.elem[t])){//文件读取失败提示
-                printf("文件读取失败！将删除原来的结点\n");
+                printf("文件读取失败！将删除当前使用的图\n");//读取失败后就会清空图
                 for(i=t;i<graphnum-1;i++)//图组元素覆盖原删除的元素
                 G1.elem[i]=G1.elem[i+1];
                 graphnum--;//图的数量减一
@@ -505,8 +480,6 @@ int main()
             getchar();getchar();
             break;
         case 14:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -527,7 +500,7 @@ int main()
             putchar('\n');
             printf("请选择要切换的图:\n");
             char name2[50];
-            scanf("%s",name2);
+            scanf("%s",name2);//读入要切换的图
             t=find(G1,name2);
             if(t==-1)//没有找到图提示出错
             {
@@ -536,14 +509,12 @@ int main()
                 break;
             }
             else {
-                strcpy(name1,name2);
+                strcpy(name1,name2);//如果可以切换就将该图切换到当前主图
                 printf("切换成功\n");
             }
             getchar();getchar();
             break;
         case 16:
-            //printf("请输入要销毁的图的名称。\n");
-            //scanf("%s",name1);//获得图的名称
             t=find(G1,name1);
             if(t==-1)//没有找到图提示出错
             {
@@ -568,7 +539,7 @@ status CreateGraph(Graph &G,GElemType V[],GElemType VR[][4])
 {
     int i,j,k;
     ArcNode *p;
-    G.vexnum=len(V);//图的结点数为结点数组的长度
+    G.vexnum=strlen(V);//图的结点数为结点数组的长度
     for(i=0;i<G.vexnum;i++)//每一个结点开始都没有弧和数据
         G.vert[i].key=V[i],G.vert[i].firstarc=NULL,G.vert[i].data=0;
     for(k=0;VR[k][0]!='#';k++)//开始建立弧
@@ -614,7 +585,7 @@ status DestroyGraph(Graph &G)
 status LocateVex(Graph G,GElemType u)
 {
     int i;
-    for(i=0;i<G.vexnum+num[find(G1,G.name)];i++)//依次搜索每一个结点
+    for(i=0;i<G.vexnum+num[find(G1,G.name)];i++)//依次搜索每一个结点,初始元素加上已将删除的元素数量
     {
         if(G.vert[i].key==u)//结点关键值与目标关键值相同代表找到结点
         {
@@ -683,9 +654,9 @@ status DeleteVex(Graph &G,GElemType v)
             }
             if(p)free(p),G.arcnum--;//删除最后一条弧
         }
-        G.vert[i].firstarc->adjvex=-1;//标记为已清除
+        G.vert[i].firstarc->adjvex=-1;//标记为已清除,若从来没有创建,则firstarc指向NULL
         G.vert[i].firstarc->nextarc=NULL;
-        G.vert[i].key='#';
+        G.vert[i].key='#';//将已将删除结点关键字标记为#
     }
     else//没有弧则需创建一条清除标记弧
     {
@@ -779,7 +750,7 @@ status DeleteArc(Graph &G,GElemType v,GElemType w)
 }
 status DFSTraverse(Graph G,status(*visit)(GElemType e,ElemType data))
 {
-    meset(isvisit);//清空访问数组
+    reset(isvisit);//清空访问数组
     int i;
     for(i=0;i<G.vexnum+num[find(G1,G.name)];i++)//依次遍历所有结点
     {
@@ -810,7 +781,7 @@ void DFS(Graph G,ElemType v)
 }
 status BFSTraverse(Graph G,status(*visit)(GElemType e,ElemType data))
 {
-    meset(isvisit);//清空访问数组
+    reset(isvisit);//清空访问数组
     int queue[100];//创造队列
     int front=0,tail=0,i,j,k;
     for(i=0;i<G.vexnum+num[find(G1,G.name)];i++)//依次遍历所有结点
@@ -842,7 +813,7 @@ status OpenFile(Graph &G)
     FILE *fp;
     char filename[30],c;
     int num,i;
-    meset(flag);//清空标记数组
+    reset(flag);//清空标记数组
     printf("请输入文件名。\n");
     scanf("%s",filename);//获得文件名
     if(!(fp=fopen(filename,"r")))//打开文件失败提示
@@ -927,17 +898,11 @@ status visit(GElemType e,ElemType data)
     printf("%c(%d) ",e,data);//输出结点的关键值与数据
     return OK;
 }
-void meset(int flag[])
+void reset(int flag[])
 {
     int i;
     for(i=0;i<100;i++)//依次把数组所有的数设为零
         flag[i]=0;
-}
-int len(char V[])
-{
-    int i;
-    for(i=0;V[i]!='\0';i++);//求出字符串长度
-    return i;
 }
 void Print(Graph G)
 {
