@@ -1,0 +1,1 @@
+/home/roland/git/learnc/nmdwsm/SAT测试备选算例/满足算例/S/tst_v25_c100.cnf

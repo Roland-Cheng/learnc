@@ -1,0 +1,1 @@
+./cnf.exe sat-20.cnf
