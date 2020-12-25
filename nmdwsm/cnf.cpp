@@ -5,7 +5,7 @@ int main()
 	int k;
 	FILE* fp;
 	int argc=2;
-	char argv[200]="/home/roland/git/learnc/nmdwsm/SAT测试备选算例/不满足算例/u-5cnf_3500_3500_30f1.shuffled-30.cnf";
+	char argv[200]="/home/roland/git/learnc/nmdwsm/SAT测试备选算例/满足算例/S/problem1-20.cnf";
 	for (k = 1; k < argc; k++)
 	{
 		fp = fopen(argv, "r");
@@ -76,7 +76,7 @@ int main()
 int dpll(clause* yuanju, int bianliang, int clanum)
 {
 	clause congju[clanum];
-	cpoycla(yuanju,congju,clanum);
+	copycla(yuanju,congju,clanum);
 	if (bianliang == 0)
 	{
 		for (size_t i = 0; i < clanum; i++)
@@ -135,7 +135,7 @@ int dpll(clause* yuanju, int bianliang, int clanum)
 	else return dpll(congju, -(bianliang - 1),clanum);
 }
 
-int cpoycla(clause* yuanju,clause* congju,int clanum)
+int copycla(clause* yuanju,clause* congju,int clanum)
 {
 	for (size_t i = 0; i < clanum; i++)
 	{
