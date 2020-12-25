@@ -1,4 +1,5 @@
 #include "cnf.h"
+#define size_t int
 
 int main()
 {
